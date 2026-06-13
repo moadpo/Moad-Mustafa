@@ -445,6 +445,81 @@
     #scroll-top:hover { background: var(--bark); transform: translateY(-2px); }
 
     /* ─── RESPONSIVE ─── */
+    /* ─── SKILLS GRID ─── */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .skill-card {
+      background: var(--white); border-radius: var(--radius-lg);
+      padding: 22px; box-shadow: var(--shadow-sm);
+      border: 1px solid var(--gray-200);
+      transition: all .25s ease; cursor: pointer;
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .skill-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); border-color: var(--clay); }
+    .skill-card-top { display: flex; align-items: flex-start; gap: 14px; }
+    .skill-emoji-box {
+      width: 52px; height: 52px; border-radius: 12px;
+      background: var(--clay-l); display: flex; align-items: center;
+      justify-content: center; font-size: 24px; flex-shrink: 0;
+    }
+    .skill-card-top-text { flex: 1; }
+    .skill-title { font-size: 15px; font-weight: 600; color: var(--bark); line-height: 1.35; margin-bottom: 4px; }
+    .skill-seller-row { display: flex; align-items: center; gap: 6px; }
+    .skill-seller-row .seller-avatar { width: 22px; height: 22px; font-size: 10px; }
+    .skill-seller-row span { font-size: 12px; color: var(--gray-600); }
+    .skill-desc { font-size: 13px; color: var(--gray-600); line-height: 1.55; }
+    .skill-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 10px; border-top: 1px solid var(--gray-200); }
+    .skill-price { font-size: 17px; font-weight: 700; color: var(--bark); font-family:'Playfair Display',serif; }
+    .skill-price small { font-size: 12px; font-weight: 400; color: var(--gray-400); font-family:'Inter',sans-serif; }
+    .skill-meta { display: flex; align-items: center; gap: 6px; }
+    .hire-btn {
+      padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 600;
+      background: var(--cream); color: var(--clay-d); border: 1.5px solid var(--clay);
+      cursor: pointer; transition: all .15s; font-family:'Inter',sans-serif;
+    }
+    .hire-btn:hover { background: var(--clay-d); color: #fff; border-color: var(--clay-d); }
+
+    /* ─── HOW IT WORKS ─── */
+    .how-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 32px;
+    }
+    .how-step {
+      text-align: center; padding: 32px 20px;
+      background: var(--white); border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm);
+      position: relative; transition: box-shadow .2s;
+    }
+    .how-step:hover { box-shadow: var(--shadow-md); }
+    .how-num {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--clay-d); color: #fff;
+      font-size: 13px; font-weight: 700; display: flex;
+      align-items: center; justify-content: center;
+    }
+    .how-icon { font-size: 40px; margin-bottom: 14px; }
+    .how-step h4 { font-size: 16px; color: var(--bark); margin-bottom: 8px; font-family:'Playfair Display',serif; }
+    .how-step p  { font-size: 13px; color: var(--gray-600); line-height: 1.6; }
+
+    /* ─── SELLER MINI STATS ─── */
+    .seller-mini-stats {
+      display: flex; justify-content: center; gap: 0;
+      border: 1.5px solid var(--gray-200); border-radius: var(--radius-lg);
+      overflow: hidden; max-width: 600px; margin: 0 auto;
+      flex-wrap: wrap;
+    }
+    .sms-item {
+      flex: 1; min-width: 120px; padding: 20px 16px; text-align: center;
+      border-right: 1px solid var(--gray-200);
+    }
+    .sms-item:last-child { border-right: none; }
+    .sms-item strong { display: block; font-size: 26px; font-family:'Playfair Display',serif; color: var(--bark); }
+    .sms-item span   { font-size: 12px; color: var(--gray-600); }
+
     @media (max-width: 768px) {
       .footer-grid { grid-template-columns: 1fr 1fr; }
       .seller-banner { flex-direction: column; text-align: center; }
@@ -662,8 +737,80 @@
     </div>
   </div>
 
-  <!-- Sell CTA Banner -->
+  <!-- Skills & Services -->
+  <div class="section" style="background:var(--gray-100)">
+    <div class="section-inner">
+      <div class="section-header">
+        <div>
+          <h2>Skills & Services</h2>
+          <p style="font-size:14px;color:var(--gray-600);margin-top:4px">Hire a crafter for custom work, lessons, or commissions</p>
+        </div>
+        <a onclick="showToast('All services page coming soon!')">See all →</a>
+      </div>
+      <div class="filter-bar" id="skills-filter-bar">
+        <button class="filter-chip active" onclick="filterSkills(this,'all')">All Skills</button>
+        <button class="filter-chip" onclick="filterSkills(this,'woodworking')">Woodworking</button>
+        <button class="filter-chip" onclick="filterSkills(this,'ceramics')">Ceramics</button>
+        <button class="filter-chip" onclick="filterSkills(this,'jewelry')">Jewelry</button>
+        <button class="filter-chip" onclick="filterSkills(this,'textiles')">Textiles</button>
+        <button class="filter-chip" onclick="filterSkills(this,'art')">Art</button>
+        <button class="filter-chip" onclick="filterSkills(this,'candles')">Candles</button>
+        <button class="filter-chip" onclick="filterSkills(this,'leather')">Leather</button>
+      </div>
+      <div class="skills-grid" id="skills-grid"></div>
+    </div>
+  </div>
+
+  <!-- How it works for sellers -->
   <div class="section">
+    <div class="section-inner">
+      <div style="text-align:center;margin-bottom:48px">
+        <span class="badge badge-moss" style="font-size:13px;padding:6px 16px;margin-bottom:14px;display:inline-block">For Sellers &amp; Crafters</span>
+        <h2 style="font-size:34px;margin-bottom:12px">Start Earning From Your Craft</h2>
+        <p style="color:var(--gray-600);max-width:500px;margin:0 auto">Thousands of customers are searching for exactly what you make. It takes less than 5 minutes to list your first product or service.</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-step">
+          <div class="how-num">1</div>
+          <div class="how-icon">✍️</div>
+          <h4>Create your profile</h4>
+          <p>Set up your seller page with your name, craft, bio, and a photo. It's completely free.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">2</div>
+          <div class="how-icon">📦</div>
+          <h4>List your products or skills</h4>
+          <p>Add photos, set your price, describe what you offer. Products, commissions, classes — anything goes.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">3</div>
+          <div class="how-icon">💬</div>
+          <h4>Connect with customers</h4>
+          <p>Customers find your listing, send you a message or order directly. You chat, confirm, and get to work.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">4</div>
+          <div class="how-icon">💰</div>
+          <h4>Get paid securely</h4>
+          <p>Payment is held securely until delivery is confirmed. Withdraw to your bank anytime.</p>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:48px">
+        <div class="seller-mini-stats">
+          <div class="sms-item"><strong>$0</strong><span>to get started</span></div>
+          <div class="sms-item"><strong>5%</strong><span>platform fee only</span></div>
+          <div class="sms-item"><strong>4,200+</strong><span>active sellers</span></div>
+          <div class="sms-item"><strong>48h</strong><span>avg. first order</span></div>
+        </div>
+        <button class="btn btn-primary" style="margin-top:32px;padding:14px 36px;font-size:16px" onclick="openModal('seller-signup')">
+          Join as a Seller — It's Free
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sell CTA Banner -->
+  <div class="section" style="background:var(--sand)">
     <div class="section-inner">
       <div class="seller-banner">
         <div class="seller-banner-text">
@@ -917,18 +1064,83 @@
 <script>
 /* ─── DATA ─── */
 const LISTINGS = [
-  { id:1, title:'Hand-Turned Oak Serving Board', seller:'Marcus W.', avatar:'M', price:89, unit:'', rating:4.9, reviews:42, category:'woodworking', emoji:'🪵', badge:'Popular', tags:['wood','oak','kitchen'] },
-  { id:2, title:'Artisan Speckled Ceramic Mug', seller:'Elena C.', avatar:'E', price:34, unit:'', rating:5.0, reviews:128, category:'ceramics', emoji:'🏺', badge:'Bestseller', tags:['mug','pottery','ceramic'] },
-  { id:3, title:'Hammered Silver Leaf Ring', seller:'Priya J.', avatar:'P', price:65, unit:'', rating:4.8, reviews:77, category:'jewelry', emoji:'💍', badge:'', tags:['ring','silver','jewelry'] },
-  { id:4, title:'Hand-Woven Wool Throw Blanket', seller:'Alma T.', avatar:'A', price:120, unit:'', rating:4.7, reviews:33, category:'textiles', emoji:'🧵', badge:'New', tags:['blanket','wool','weave'] },
-  { id:5, title:'Botanical Watercolor Print Set', seller:'Leo A.', avatar:'L', price:48, unit:'set of 3', rating:4.9, reviews:94, category:'art', emoji:'🎨', badge:'Popular', tags:['print','watercolor','art'] },
-  { id:6, title:'Macramé Wall Hanging — Large', seller:'Sara H.', avatar:'S', price:95, unit:'', rating:4.6, reviews:56, category:'home', emoji:'🏠', badge:'', tags:['macrame','wall art','decor'] },
-  { id:7, title:'Lavender & Sage Soy Candle', seller:'Nina C.', avatar:'N', price:28, unit:'', rating:5.0, reviews:201, category:'candles', emoji:'🕯️', badge:'Bestseller', tags:['candle','lavender','soy'] },
-  { id:8, title:'Hand-Stitched Leather Journal', seller:'Omar L.', avatar:'O', price:72, unit:'', rating:4.8, reviews:49, category:'leather', emoji:'👜', badge:'', tags:['leather','journal','handmade'] },
-  { id:9, title:'Reclaimed Wood Wall Clock', seller:'Marcus W.', avatar:'M', price:110, unit:'', rating:4.7, reviews:28, category:'woodworking', emoji:'🕐', badge:'New', tags:['clock','wood','decor'] },
-  { id:10, title:'Hand-Painted Ceramic Vase', seller:'Elena C.', avatar:'E', price:58, unit:'', rating:4.9, reviews:62, category:'ceramics', emoji:'🏺', badge:'', tags:['vase','ceramic','painted'] },
-  { id:11, title:'Beaded Turquoise Bracelet', seller:'Priya J.', avatar:'P', price:42, unit:'', rating:4.8, reviews:81, category:'jewelry', emoji:'💎', badge:'Sale', tags:['bracelet','turquoise','beads'] },
-  { id:12, title:'Custom Portrait Commission', seller:'Leo A.', avatar:'L', price:150, unit:'per piece', rating:5.0, reviews:37, category:'art', emoji:'🖼️', badge:'New', tags:['portrait','commission','art'] },
+  // Woodworking
+  { id:1,  title:'Hand-Turned Oak Serving Board',       seller:'Marcus W.', avatar:'M', price:89,  unit:'',          rating:4.9, reviews:142, category:'woodworking', emoji:'🪵', badge:'Popular',    tags:['wood','oak','kitchen'] },
+  { id:9,  title:'Reclaimed Wood Wall Clock',           seller:'Marcus W.', avatar:'M', price:110, unit:'',          rating:4.7, reviews:58,  category:'woodworking', emoji:'🕐', badge:'New',        tags:['clock','wood','decor'] },
+  { id:13, title:'Walnut Chess Set — Hand Carved',      seller:'Daniel F.', avatar:'D', price:185, unit:'',          rating:5.0, reviews:29,  category:'woodworking', emoji:'♟️', badge:'',           tags:['chess','walnut','game'] },
+  { id:14, title:'Pine Floating Shelf Set (3 pcs)',     seller:'Daniel F.', avatar:'D', price:64,  unit:'set',       rating:4.8, reviews:76,  category:'woodworking', emoji:'🪵', badge:'Sale',       tags:['shelf','pine','furniture'] },
+  { id:15, title:'Hand-Carved Wooden Spoon Set',        seller:'Marcus W.', avatar:'M', price:38,  unit:'set of 4',  rating:4.9, reviews:93,  category:'woodworking', emoji:'🥄', badge:'Bestseller', tags:['spoon','kitchen','carved'] },
+  // Ceramics
+  { id:2,  title:'Artisan Speckled Ceramic Mug',        seller:'Elena C.', avatar:'E', price:34,  unit:'',          rating:5.0, reviews:228, category:'ceramics', emoji:'☕', badge:'Bestseller', tags:['mug','pottery','ceramic'] },
+  { id:10, title:'Hand-Painted Ceramic Vase',           seller:'Elena C.', avatar:'E', price:58,  unit:'',          rating:4.9, reviews:62,  category:'ceramics', emoji:'🏺', badge:'',           tags:['vase','ceramic','painted'] },
+  { id:16, title:'Rustic Stoneware Dinner Set (4)',     seller:'Yuki P.',  avatar:'Y', price:210, unit:'set',       rating:4.8, reviews:41,  category:'ceramics', emoji:'🍽️', badge:'Popular',    tags:['dinner','stoneware','set'] },
+  { id:17, title:'Terracotta Planter with Saucer',      seller:'Yuki P.',  avatar:'Y', price:45,  unit:'',          rating:4.7, reviews:87,  category:'ceramics', emoji:'🌿', badge:'New',        tags:['planter','terracotta','garden'] },
+  { id:18, title:'Celadon Tea Set — 6 Pieces',          seller:'Elena C.', avatar:'E', price:130, unit:'set',       rating:5.0, reviews:55,  category:'ceramics', emoji:'🍵', badge:'',           tags:['tea','celadon','set'] },
+  // Jewelry
+  { id:3,  title:'Hammered Silver Leaf Ring',           seller:'Priya J.', avatar:'P', price:65,  unit:'',          rating:4.8, reviews:177, category:'jewelry', emoji:'💍', badge:'',           tags:['ring','silver','jewelry'] },
+  { id:11, title:'Beaded Turquoise Bracelet',           seller:'Priya J.', avatar:'P', price:42,  unit:'',          rating:4.8, reviews:81,  category:'jewelry', emoji:'📿', badge:'Sale',       tags:['bracelet','turquoise','beads'] },
+  { id:19, title:'14k Gold-Filled Hoop Earrings',       seller:'Chloe M.', avatar:'C', price:78,  unit:'pair',      rating:4.9, reviews:134, category:'jewelry', emoji:'✨', badge:'Popular',    tags:['earrings','gold','hoops'] },
+  { id:20, title:'Copper & Leather Cuff Bracelet',      seller:'Chloe M.', avatar:'C', price:55,  unit:'',          rating:4.7, reviews:48,  category:'jewelry', emoji:'💛', badge:'New',        tags:['cuff','copper','leather'] },
+  { id:21, title:'Labradorite Crystal Pendant',         seller:'Priya J.', avatar:'P', price:90,  unit:'',          rating:5.0, reviews:62,  category:'jewelry', emoji:'🔮', badge:'Bestseller', tags:['pendant','crystal','labradorite'] },
+  // Textiles
+  { id:4,  title:'Hand-Woven Wool Throw Blanket',       seller:'Alma T.', avatar:'A', price:120, unit:'',           rating:4.7, reviews:33,  category:'textiles', emoji:'🧣', badge:'New',        tags:['blanket','wool','weave'] },
+  { id:22, title:'Macramé Plant Hanger (Set of 3)',     seller:'Sara H.', avatar:'S', price:48,  unit:'set',        rating:4.8, reviews:112, category:'textiles', emoji:'🌱', badge:'Popular',    tags:['macrame','plant','hanger'] },
+  { id:23, title:'Hand-Knit Chunky Merino Scarf',       seller:'Alma T.', avatar:'A', price:72,  unit:'',           rating:4.9, reviews:59,  category:'textiles', emoji:'🧤', badge:'',           tags:['scarf','merino','knit'] },
+  { id:24, title:'Woven Cotton Rug — Boho Pattern',     seller:'Alma T.', avatar:'A', price:155, unit:'',           rating:4.6, reviews:27,  category:'textiles', emoji:'🛋️', badge:'Sale',       tags:['rug','cotton','boho'] },
+  // Art
+  { id:5,  title:'Botanical Watercolor Print Set',      seller:'Leo A.', avatar:'L', price:48,  unit:'set of 3',   rating:4.9, reviews:94,  category:'art', emoji:'🌸', badge:'Popular',    tags:['print','watercolor','art'] },
+  { id:12, title:'Custom Family Portrait Commission',   seller:'Leo A.', avatar:'L', price:150, unit:'per piece',  rating:5.0, reviews:37,  category:'art', emoji:'🖼️', badge:'New',        tags:['portrait','commission','art'] },
+  { id:25, title:'Abstract Acrylic Canvas 40×50cm',    seller:'Zara K.', avatar:'Z', price:220, unit:'',           rating:4.8, reviews:19,  category:'art', emoji:'🎨', badge:'',           tags:['acrylic','canvas','abstract'] },
+  { id:26, title:'Linocut Print — Forest Animals',      seller:'Zara K.', avatar:'Z', price:35,  unit:'each',      rating:4.9, reviews:68,  category:'art', emoji:'🦊', badge:'Bestseller', tags:['linocut','print','animals'] },
+  { id:27, title:'Charcoal Portrait — Custom Pet',      seller:'Leo A.', avatar:'L', price:95,  unit:'per piece',  rating:5.0, reviews:44,  category:'art', emoji:'🐾', badge:'Popular',    tags:['pet','portrait','charcoal'] },
+  // Home Decor
+  { id:6,  title:'Macramé Wall Hanging — Large',        seller:'Sara H.', avatar:'S', price:95,  unit:'',          rating:4.6, reviews:56,  category:'home', emoji:'🏠', badge:'',           tags:['macrame','wall art','decor'] },
+  { id:28, title:'Driftwood Coastal Wreath',            seller:'Sara H.', avatar:'S', price:68,  unit:'',          rating:4.7, reviews:34,  category:'home', emoji:'🌊', badge:'New',        tags:['wreath','driftwood','coastal'] },
+  { id:29, title:'Hand-Stamped Linen Table Runner',     seller:'Alma T.', avatar:'A', price:44,  unit:'',          rating:4.8, reviews:72,  category:'home', emoji:'🌿', badge:'',           tags:['table','linen','runner'] },
+  { id:30, title:'Pressed Flower Glass Frame Set',      seller:'Zara K.', avatar:'Z', price:52,  unit:'set of 2',  rating:4.9, reviews:48,  category:'home', emoji:'🌷', badge:'Sale',       tags:['frame','flower','pressed'] },
+  // Candles
+  { id:7,  title:'Lavender & Sage Soy Candle',          seller:'Nina C.', avatar:'N', price:28,  unit:'',          rating:5.0, reviews:401, category:'candles', emoji:'🕯️', badge:'Bestseller', tags:['candle','lavender','soy'] },
+  { id:31, title:'Cedarwood & Vanilla Gift Set (3)',    seller:'Nina C.', avatar:'N', price:72,  unit:'set',       rating:4.9, reviews:88,  category:'candles', emoji:'🎁', badge:'Popular',    tags:['candle','cedar','gift'] },
+  { id:32, title:'Beeswax Taper Candles (Set of 6)',    seller:'Bea W.',  avatar:'B', price:34,  unit:'set',       rating:4.7, reviews:53,  category:'candles', emoji:'🕯️', badge:'',           tags:['beeswax','taper','natural'] },
+  { id:33, title:'Concrete Geo Candle — Black Fig',     seller:'Bea W.',  avatar:'B', price:42,  unit:'',          rating:4.8, reviews:61,  category:'candles', emoji:'⬛', badge:'New',        tags:['concrete','candle','modern'] },
+  // Leather
+  { id:8,  title:'Hand-Stitched Leather Journal',       seller:'Omar L.', avatar:'O', price:72,  unit:'',          rating:4.8, reviews:149, category:'leather', emoji:'📔', badge:'',           tags:['leather','journal','handmade'] },
+  { id:34, title:'Slim Bifold Leather Wallet',          seller:'Omar L.', avatar:'O', price:58,  unit:'',          rating:4.9, reviews:203, category:'leather', emoji:'👛', badge:'Bestseller', tags:['wallet','leather','slim'] },
+  { id:35, title:'Hand-Tooled Leather Belt',            seller:'Omar L.', avatar:'O', price:85,  unit:'',          rating:4.7, reviews:76,  category:'leather', emoji:'👔', badge:'Popular',    tags:['belt','leather','tooled'] },
+  { id:36, title:'Leather Key Fob & Card Holder',       seller:'Hana R.', avatar:'H', price:32,  unit:'',          rating:4.8, reviews:92,  category:'leather', emoji:'🗝️', badge:'Sale',       tags:['key','card','leather'] },
+];
+
+const SKILLS = [
+  // Woodworking
+  { id:'s1',  title:'Custom Furniture Design & Build',      seller:'Marcus W.',  avatar:'M', price:200,  unit:'project',  rating:5.0, reviews:18,  category:'woodworking', emoji:'🔨', badge:'Top Rated',  tags:['furniture','custom','build'],    desc:'From dining tables to shelving units. Send me your dimensions and I\'ll bring your vision to life.' },
+  { id:'s2',  title:'Wood Engraving & Personalization',      seller:'Daniel F.',  avatar:'D', price:35,   unit:'item',     rating:4.9, reviews:64,  category:'woodworking', emoji:'✏️', badge:'Popular',    tags:['engraving','gift','personal'],   desc:'Personalized names, quotes, or logos laser-engraved on any wood item. Great for gifts.' },
+  { id:'s3',  title:'Woodworking Beginner Workshop (2h)',    seller:'Marcus W.',  avatar:'M', price:75,   unit:'person',   rating:5.0, reviews:31,  category:'woodworking', emoji:'🎓', badge:'New',        tags:['workshop','class','beginner'],   desc:'Learn the basics of hand tools, joinery, and finishing in a relaxed 2-hour hands-on class.' },
+  // Ceramics
+  { id:'s4',  title:'Pottery Wheel Class — 3 Sessions',     seller:'Elena C.',   avatar:'E', price:120,  unit:'package',  rating:5.0, reviews:47,  category:'ceramics', emoji:'🏺', badge:'Bestseller', tags:['pottery','class','wheel'],       desc:'3 × 90-min sessions. Learn centering, throwing, and trimming. Materials included.' },
+  { id:'s5',  title:'Custom Ceramic Name Plates',           seller:'Yuki P.',    avatar:'Y', price:55,   unit:'piece',    rating:4.8, reviews:33,  category:'ceramics', emoji:'🪧', badge:'',           tags:['custom','name','ceramic'],       desc:'Personalized ceramic plaques for homes, offices, or nurseries. Fired and glazed to order.' },
+  { id:'s6',  title:'Corporate Gift Set — Branded Mugs',    seller:'Elena C.',   avatar:'E', price:28,   unit:'per mug',  rating:4.9, reviews:22,  category:'ceramics', emoji:'🏢', badge:'Popular',    tags:['corporate','gift','mug'],        desc:'Minimum order 10 mugs. Your logo or text hand-stamped before firing. Perfect for events.' },
+  // Jewelry
+  { id:'s7',  title:'Custom Engagement Ring Design',        seller:'Priya J.',   avatar:'P', price:350,  unit:'ring',     rating:5.0, reviews:15,  category:'jewelry', emoji:'💍', badge:'Top Rated',  tags:['ring','engagement','custom'],    desc:'Design your dream ring from scratch. Silver, gold-fill, or solid gold options available.' },
+  { id:'s8',  title:'Jewelry Repair & Resizing',            seller:'Chloe M.',   avatar:'C', price:25,   unit:'item',     rating:4.9, reviews:88,  category:'jewelry', emoji:'🔧', badge:'Popular',    tags:['repair','resize','jewelry'],     desc:'Ring resizing, clasp repair, restringing, and polishing. Fast turnaround within 48 hours.' },
+  { id:'s9',  title:'Wire-Wrapping Jewelry Class (Online)', seller:'Priya J.',   avatar:'P', price:45,   unit:'session',  rating:4.8, reviews:39,  category:'jewelry', emoji:'🎓', badge:'New',        tags:['class','wire','online'],         desc:'1-hour live Zoom class. Learn to wrap crystals and stones. Kit shipped to you beforehand.' },
+  // Textiles
+  { id:'s10', title:'Custom Knit Pattern Commission',       seller:'Alma T.',    avatar:'A', price:90,   unit:'pattern',  rating:4.9, reviews:24,  category:'textiles', emoji:'🧶', badge:'',           tags:['knit','pattern','custom'],       desc:'Send your measurements and style. I\'ll design and knit a one-of-a-kind sweater or accessory.' },
+  { id:'s11', title:'Macramé Wall Art — Made to Order',     seller:'Sara H.',    avatar:'S', price:80,   unit:'piece',    rating:4.7, reviews:52,  category:'textiles', emoji:'🖼️', badge:'Popular',    tags:['macrame','custom','wall'],       desc:'Custom sizes and colors. Boho, minimal, or coastal styles. Dispatch within 7–10 days.' },
+  { id:'s12', title:'Weaving Workshop for Beginners (3h)', seller:'Alma T.',    avatar:'A', price:85,   unit:'person',   rating:5.0, reviews:20,  category:'textiles', emoji:'🎓', badge:'Bestseller', tags:['weaving','workshop','beginner'], desc:'Learn warp setup, basic weaves, and finishing on a small table loom. All materials included.' },
+  // Art
+  { id:'s13', title:'Custom Pet Portrait — Watercolor',    seller:'Leo A.',     avatar:'L', price:85,   unit:'portrait', rating:5.0, reviews:76,  category:'art', emoji:'🐶', badge:'Bestseller', tags:['pet','watercolor','portrait'],   desc:'Send 2–3 clear photos of your pet. Delivered as a high-res print + original. Framed option available.' },
+  { id:'s14', title:'Children\'s Book Illustration',       seller:'Zara K.',    avatar:'Z', price:120,  unit:'spread',   rating:4.9, reviews:14,  category:'art', emoji:'📚', badge:'New',        tags:['illustration','children','book'], desc:'Full-color spreads for self-published books. Style: whimsical, character-driven. Includes 2 revisions.' },
+  { id:'s15', title:'Logo Design with Handmade Aesthetic', seller:'Leo A.',     avatar:'L', price:180,  unit:'project',  rating:4.8, reviews:28,  category:'art', emoji:'✍️', badge:'Popular',    tags:['logo','brand','design'],         desc:'Hand-lettered or illustrated logos for small businesses and artisan brands. SVG + PNG deliverables.' },
+  // Home Decor
+  { id:'s16', title:'Custom Floral Wreath — Any Occasion', seller:'Sara H.',    avatar:'S', price:65,   unit:'wreath',   rating:4.8, reviews:43,  category:'home', emoji:'💐', badge:'Popular',    tags:['wreath','floral','custom'],      desc:'Wedding, seasonal, or everyday wreaths. Dried or faux florals. Custom color palette welcome.' },
+  { id:'s17', title:'Interior Styling — Boho Corner Setup', seller:'Zara K.',   avatar:'Z', price:150,  unit:'session',  rating:4.7, reviews:11,  category:'home', emoji:'🛋️', badge:'New',        tags:['interior','styling','boho'],     desc:'1-hour virtual session to style your room corner using handmade and thrifted pieces you already own.' },
+  // Candles
+  { id:'s18', title:'Candle-Making Workshop (2h)',          seller:'Nina C.',    avatar:'N', price:60,   unit:'person',   rating:5.0, reviews:89,  category:'candles', emoji:'🕯️', badge:'Top Rated',  tags:['candle','workshop','diy'],       desc:'Pour your own soy candle, choose your scent, and leave with 2 finished candles. All supplies included.' },
+  { id:'s19', title:'Custom Scented Candle Gift Sets',      seller:'Bea W.',     avatar:'B', price:90,   unit:'set of 3', rating:4.8, reviews:37,  category:'candles', emoji:'🎁', badge:'Popular',    tags:['candle','gift','custom'],        desc:'Choose your scents, colors, and jar style. Custom labels with your name or message printed free.' },
+  // Leather
+  { id:'s20', title:'Monogrammed Leather Goods',            seller:'Omar L.',    avatar:'O', price:20,   unit:'item',     rating:4.9, reviews:118, category:'leather', emoji:'🔤', badge:'Bestseller', tags:['monogram','leather','personal'], desc:'Add initials, names, or dates to wallets, journals, or bags. Heat-stamped or laser engraved.' },
+  { id:'s21', title:'Custom Leather Bag Design & Build',    seller:'Hana R.',    avatar:'H', price:280,  unit:'bag',      rating:5.0, reviews:9,   category:'leather', emoji:'👜', badge:'Top Rated',  tags:['bag','leather','custom'],        desc:'Tote, crossbody, or backpack — fully custom from template to stitching. Choose leather color and hardware.' },
+  { id:'s22', title:'Leather Craft Class — 2 Sessions',     seller:'Omar L.',    avatar:'O', price:110,  unit:'package',  rating:4.9, reviews:26,  category:'leather', emoji:'🎓', badge:'New',        tags:['leather','class','craft'],       desc:'Learn cutting, edge finishing, and hand stitching. Make your own card holder to take home.' },
 ];
 
 const SELLERS = [
@@ -944,6 +1156,45 @@ let cartCount = 0;
 let favs = new Set();
 let activeCategory = 'all';
 let currentSearch = '';
+
+/* ─── RENDER SKILLS ─── */
+function renderSkills(items) {
+  const grid = document.getElementById('skills-grid');
+  if (!grid) return;
+  grid.innerHTML = items.map(s => `
+    <div class="skill-card" onclick="showToast('Opening: ${s.title.replace(/'/g,"\\'")}')">
+      <div class="skill-card-top">
+        <div class="skill-emoji-box">${s.emoji}</div>
+        <div class="skill-card-top-text">
+          <div class="skill-title">${s.title}</div>
+          <div class="skill-seller-row">
+            <div class="seller-avatar">${s.avatar}</div>
+            <span>${s.seller}</span>
+            ${s.badge ? `<span class="badge ${s.badge==='Top Rated'?'badge-clay':s.badge==='Bestseller'?'badge-rust':'badge-moss'}" style="margin-left:4px">${s.badge}</span>` : ''}
+          </div>
+        </div>
+      </div>
+      <div class="skill-desc">${s.desc}</div>
+      <div class="skill-footer">
+        <div>
+          <div class="skill-price">$${s.price} <small>/ ${s.unit}</small></div>
+          <div class="skill-meta">
+            <div class="stars">${renderStars(s.rating)}</div>
+            <span class="rating-text">${s.rating} (${s.reviews})</span>
+          </div>
+        </div>
+        <button class="hire-btn" onclick="event.stopPropagation();showToast('Hiring: ${s.seller.replace(/'/g,"\\'")}')">Hire</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterSkills(el, cat) {
+  document.querySelectorAll('#skills-filter-bar .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const items = cat === 'all' ? SKILLS : SKILLS.filter(s => s.category === cat);
+  renderSkills(items);
+}
 
 /* ─── RENDER LISTINGS ─── */
 function renderListings(items, containerId) {
@@ -1207,6 +1458,7 @@ window.addEventListener('scroll', () => {
 document.addEventListener('DOMContentLoaded', () => {
   renderListings(LISTINGS, 'listings-grid');
   renderSellerCards(SELLERS);
+  renderSkills(SKILLS);
   renderListings(LISTINGS.slice(0,6), 'seller-listings-grid');
 });
 </script>
