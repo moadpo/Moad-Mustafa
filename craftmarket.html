@@ -1147,6 +1147,10 @@
       *, *::before, *::after { transition-duration: 0.01ms !important; }
     }
   </style>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -1181,7 +1185,7 @@
         <span class="cart-count" id="cart-count">0</span>
       </button>
       <button class="btn btn-outline btn-sm" id="nav-signin-btn" onclick="openModal('signin')">Sign In</button>
-      <div class="nav-avatar hidden" id="nav-avatar" onclick="showToast('Profile menu coming soon!')">J</div>
+      <div class="nav-avatar hidden" id="nav-avatar" onclick="handleAvatarClick()">J</div>
     </div>
   </div>
 </nav>
@@ -1813,7 +1817,7 @@
           <input type="password" id="login-password" placeholder="Enter your password" />
         </div>
         <div style="text-align:right; margin-bottom:16px">
-          <a style="font-size:13px;color:var(--clay-d);cursor:pointer" onclick="showToast('Password reset email sent!')">Forgot password?</a>
+          <a style="font-size:13px;color:var(--clay-d);cursor:pointer" onclick="handleForgotPassword()">Forgot password?</a>
         </div>
         <button class="btn btn-primary" style="width:100%" onclick="handleSignIn()">Sign In</button>
         <div class="form-divider">or continue with</div>
@@ -1836,16 +1840,16 @@
           <button class="modal-tab" id="reg-tab-seller" onclick="switchRegRole('seller')">Crafter</button>
         </div>
         <div class="form-row">
-          <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" /></div>
-          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" /></div>
+          <div class="form-group"><label>First Name</label><input type="text" placeholder="Jane" id="reg-fname"/></div>
+          <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" id="reg-lname"/></div>
         </div>
-        <div class="form-group"><label>Email address</label><input type="email" placeholder="you@example.com" /></div>
-        <div class="form-group"><label>Password</label><input type="password" placeholder="At least 8 characters" /></div>
+        <div class="form-group"><label>Email address</label><input type="email" placeholder="you@example.com" id="reg-email"/></div>
+        <div class="form-group"><label>Password</label><input type="password" placeholder="At least 8 characters" id="reg-password"/></div>
         <div id="seller-extra-fields" class="hidden">
-          <div class="form-group"><label>Studio Name</label><input type="text" placeholder="e.g. Clay & Co." /></div>
+          <div class="form-group"><label>Studio Name</label><input type="text" placeholder="e.g. Clay & Co." id="reg-shop"/></div>
           <div class="form-group">
             <label>Primary Craft</label>
-            <select>
+            <select id="reg-craft">
               <option value="">Select your craft…</option>
               <option>Woodworking</option><option>Ceramics & Pottery</option>
               <option>Jewelry Making</option><option>Textiles & Weaving</option>
@@ -1876,7 +1880,7 @@
         <div class="form-group"><label>Last Name</label><input type="text" placeholder="Doe" id="s-lname"/></div>
       </div>
       <div class="form-group"><label>Email</label><input type="email" placeholder="you@example.com" id="s-email"/></div>
-      <div class="form-group"><label>Password</label><input type="password" placeholder="At least 8 characters" /></div>
+      <div class="form-group"><label>Password</label><input type="password" placeholder="At least 8 characters" id="s-password"/></div>
       <div class="form-group"><label>Studio Name</label><input type="text" placeholder="e.g. Clay & Co." id="s-shop"/></div>
       <div class="form-group">
         <label>Primary Craft</label>
@@ -1891,7 +1895,7 @@
       </div>
       <div class="form-group">
         <label>Short Bio</label>
-        <textarea rows="3" placeholder="Tell customers about yourself and your craft…" style="resize:vertical"></textarea>
+        <textarea rows="3" placeholder="Tell customers about yourself and your craft…" style="resize:vertical" id="s-bio"></textarea>
       </div>
       <button class="btn btn-primary" style="width:100%" onclick="handleSellerRegister()">Create Seller Account</button>
       <p class="form-note">Already selling? <a onclick="openModal('signin')">Sign in</a></p>
@@ -3231,47 +3235,146 @@ function switchRegRole(role) {
   document.getElementById('seller-extra-fields').classList.toggle('hidden', role!=='seller');
 }
 
-/* ─── AUTH HANDLERS ─── */
-function handleSignIn() {
-  const email = document.getElementById('login-email').value;
-  if (!email) { showToast('Please enter your email'); return; }
-  closeModal();
-  document.getElementById('nav-signin-btn').classList.add('hidden');
-  document.getElementById('nav-avatar').classList.remove('hidden');
-  document.getElementById('nav-avatar').textContent = email[0].toUpperCase();
-  showToast('Welcome back!');
-  if (document.getElementById('screen-role').classList.contains('hidden') === false) {
-    showHome();
+/* ─── FIREBASE INIT ─── */
+const firebaseConfig = {
+  apiKey: "AIzaSyAvwHuq-QfWpTGaHuSVvxcv3SmHHJVSDdQ",
+  authDomain: "moadmustafa.firebaseapp.com",
+  projectId: "moadmustafa",
+  storageBucket: "moadmustafa.firebasestorage.app",
+  messagingSenderId: "707372885184",
+  appId: "1:707372885184:web:4f5f064d1c105559c4f925"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// Restore session on page load
+auth.onAuthStateChanged(async user => {
+  if (!user) return;
+  const snap = await db.collection('users').doc(user.uid).get();
+  const data = snap.exists ? snap.data() : {};
+  setNavLoggedIn(data.firstName || user.email, user.email[0]);
+  if (data.role === 'crafter') {
+    window._loggedInSeller = { ...data, avatar: (data.firstName || 'U')[0].toUpperCase() };
   }
-}
+  if (!document.getElementById('screen-role').classList.contains('hidden')) showHome();
+});
 
-function handleRegister() {
-  closeModal();
-  document.getElementById('nav-signin-btn').classList.add('hidden');
-  document.getElementById('nav-avatar').classList.remove('hidden');
-  showToast('Account created! Welcome to CraftMarket!');
-  showHome();
-}
-
-function handleSellerRegister() {
-  const fname = document.getElementById('s-fname').value.trim();
-  const lname = document.getElementById('s-lname') ? document.getElementById('s-lname').value.trim() : '';
-  const shop  = document.getElementById('s-shop').value.trim();
-  const email = document.getElementById('s-email').value.trim();
-  const craft = document.getElementById('s-craft').value;
-  if (!fname) { showToast('Please fill in your name'); return; }
-  window._loggedInSeller = {
-    firstName: fname, lastName: lname, shopName: shop,
-    email: email, craft: craft,
-    avatar: fname[0].toUpperCase(),
-  };
-  closeModal();
+function setNavLoggedIn(name, initial) {
   document.getElementById('nav-signin-btn').classList.add('hidden');
   const av = document.getElementById('nav-avatar');
   av.classList.remove('hidden');
-  av.textContent = fname[0].toUpperCase();
-  showToast(`Welcome, ${fname}! Your studio is ready!`);
-  showSellerDash();
+  av.textContent = (initial || (name && name[0]) || 'U').toUpperCase();
+}
+
+/* ─── AUTH HANDLERS ─── */
+async function handleSignIn() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) { showToast('Please enter your email and password'); return; }
+  try {
+    const cred = await auth.signInWithEmailAndPassword(email, password);
+    const snap = await db.collection('users').doc(cred.user.uid).get();
+    const data = snap.exists ? snap.data() : {};
+    closeModal();
+    setNavLoggedIn(data.firstName || email, (data.firstName || email)[0]);
+    showToast(`Welcome back${data.firstName ? ', ' + data.firstName : ''}!`);
+    if (data.role === 'crafter') {
+      window._loggedInSeller = { ...data, avatar: (data.firstName || 'U')[0].toUpperCase() };
+    }
+    if (!document.getElementById('screen-role').classList.contains('hidden')) showHome();
+  } catch(e) {
+    showToast(firebaseError(e));
+  }
+}
+
+async function handleRegister() {
+  const fname    = document.getElementById('reg-fname').value.trim();
+  const lname    = document.getElementById('reg-lname').value.trim();
+  const email    = document.getElementById('reg-email').value.trim();
+  const password = document.getElementById('reg-password').value;
+  const role     = document.getElementById('reg-tab-seller').classList.contains('active') ? 'crafter' : 'customer';
+  const shop     = role === 'crafter' ? (document.getElementById('reg-shop') || {}).value || '' : '';
+  const craft    = role === 'crafter' ? (document.getElementById('reg-craft') || {}).value || '' : '';
+  if (!fname || !email || !password) { showToast('Please fill in all required fields'); return; }
+  if (password.length < 8) { showToast('Password must be at least 8 characters'); return; }
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    const profile = { firstName: fname, lastName: lname, email, role, shopName: shop, craft, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+    await db.collection('users').doc(cred.user.uid).set(profile);
+    closeModal();
+    setNavLoggedIn(fname, fname[0]);
+    showToast(`Welcome, ${fname}! Account created!`);
+    if (role === 'crafter') {
+      window._loggedInSeller = { ...profile, avatar: fname[0].toUpperCase() };
+      showSellerDash();
+    } else {
+      showHome();
+    }
+  } catch(e) {
+    showToast(firebaseError(e));
+  }
+}
+
+async function handleSellerRegister() {
+  const fname    = document.getElementById('s-fname').value.trim();
+  const lname    = document.getElementById('s-lname').value.trim();
+  const email    = document.getElementById('s-email').value.trim();
+  const password = document.getElementById('s-password').value;
+  const shop     = document.getElementById('s-shop').value.trim();
+  const craft    = document.getElementById('s-craft').value;
+  const bio      = document.getElementById('s-bio').value.trim();
+  if (!fname || !email || !password) { showToast('Please fill in name, email and password'); return; }
+  if (password.length < 8) { showToast('Password must be at least 8 characters'); return; }
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, password);
+    const profile = { firstName: fname, lastName: lname, email, role: 'crafter', shopName: shop, craft, bio, createdAt: firebase.firestore.FieldValue.serverTimestamp() };
+    await db.collection('users').doc(cred.user.uid).set(profile);
+    window._loggedInSeller = { ...profile, avatar: fname[0].toUpperCase() };
+    closeModal();
+    setNavLoggedIn(fname, fname[0]);
+    showToast(`Welcome, ${fname}! Your studio is ready!`);
+    showSellerDash();
+  } catch(e) {
+    showToast(firebaseError(e));
+  }
+}
+
+async function handleSignOut() {
+  await auth.signOut();
+  window._loggedInSeller = null;
+  document.getElementById('nav-signin-btn').classList.remove('hidden');
+  document.getElementById('nav-avatar').classList.add('hidden');
+  showToast('Signed out successfully');
+  showHome();
+}
+
+async function handleForgotPassword() {
+  const email = document.getElementById('login-email').value.trim();
+  if (!email) { showToast('Enter your email first, then click Forgot Password'); return; }
+  try {
+    await auth.sendPasswordResetEmail(email);
+    showToast('Password reset email sent! Check your inbox');
+  } catch(e) {
+    showToast(firebaseError(e));
+  }
+}
+
+function handleAvatarClick() {
+  if (confirm('Sign out of your account?')) handleSignOut();
+}
+
+function firebaseError(e) {
+  const map = {
+    'auth/user-not-found':        'No account found with that email',
+    'auth/wrong-password':        'Incorrect password',
+    'auth/email-already-in-use':  'An account with this email already exists',
+    'auth/invalid-email':         'Please enter a valid email address',
+    'auth/weak-password':         'Password must be at least 8 characters',
+    'auth/too-many-requests':     'Too many attempts. Please try again later',
+    'auth/invalid-credential':    'Invalid email or password',
+  };
+  return map[e.code] || e.message || 'Something went wrong';
 }
 
 /* ─── CHAT ─── */
