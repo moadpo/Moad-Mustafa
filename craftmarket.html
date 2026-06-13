@@ -696,6 +696,146 @@
       .role-card { max-width: 100%; }
     }
 
+    /* ─── ALL CATEGORIES PANEL ─── */
+    #allcat-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(61,43,31,.45); backdrop-filter: blur(5px);
+      opacity: 0; pointer-events: none; transition: opacity .25s;
+    }
+    #allcat-overlay.open { opacity: 1; pointer-events: all; }
+
+    #allcat-panel {
+      position: fixed; inset: 0; top: 64px; z-index: 201;
+      display: flex;
+      transform: translateY(30px); opacity: 0; pointer-events: none;
+      transition: transform .3s ease, opacity .25s ease;
+    }
+    #allcat-panel.open { transform: translateY(0); opacity: 1; pointer-events: all; }
+
+    /* Left sidebar */
+    .allcat-sidebar {
+      width: 280px; flex-shrink: 0;
+      background: var(--white); border-right: 1px solid var(--gray-200);
+      overflow-y: auto; display: flex; flex-direction: column;
+    }
+    .allcat-sidebar::-webkit-scrollbar { width: 4px; }
+    .allcat-sidebar::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
+
+    .allcat-sidebar-header {
+      padding: 20px 20px 12px; border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 0; background: var(--white); z-index: 1;
+    }
+    .allcat-sidebar-header h3 { font-size: 16px; color: var(--bark); }
+    .allcat-close-btn {
+      width: 30px; height: 30px; border-radius: 50%;
+      border: none; background: var(--gray-100); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gray-600); transition: background .15s;
+    }
+    .allcat-close-btn:hover { background: var(--gray-200); }
+
+    .allcat-search-wrap {
+      padding: 12px 16px; border-bottom: 1px solid var(--gray-200);
+      position: sticky; top: 57px; background: var(--white); z-index: 1;
+    }
+    .allcat-search {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--gray-100); border-radius: 8px;
+      padding: 8px 12px; border: 1.5px solid transparent;
+      transition: border-color .15s;
+    }
+    .allcat-search:focus-within { border-color: var(--clay-d); background: var(--white); }
+    .allcat-search input {
+      flex: 1; border: none; background: transparent; outline: none;
+      font-size: 13px; color: var(--bark); font-family: 'Inter', sans-serif;
+    }
+    .allcat-search input::placeholder { color: var(--gray-400); }
+
+    .allcat-group { padding: 12px 0; border-bottom: 1px solid var(--gray-200); }
+    .allcat-group:last-child { border-bottom: none; }
+    .allcat-group-label {
+      font-size: 10px; font-weight: 700; color: var(--gray-400);
+      text-transform: uppercase; letter-spacing: .08em;
+      padding: 0 16px 8px;
+    }
+    .allcat-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 9px 16px; cursor: pointer;
+      transition: background .12s; border-left: 3px solid transparent;
+    }
+    .allcat-item:hover { background: var(--gray-100); }
+    .allcat-item.active {
+      background: var(--clay-l); border-left-color: var(--clay-d);
+    }
+    .allcat-item-icon { font-size: 18px; width: 24px; text-align: center; flex-shrink: 0; }
+    .allcat-item-text { flex: 1; }
+    .allcat-item-text .cat-name { font-size: 13px; font-weight: 500; color: var(--bark); }
+    .allcat-item-text .cat-count { font-size: 11px; color: var(--gray-400); }
+    .allcat-item-arrow {
+      font-size: 10px; color: var(--gray-400);
+      opacity: 0; transition: opacity .12s;
+    }
+    .allcat-item:hover .allcat-item-arrow,
+    .allcat-item.active .allcat-item-arrow { opacity: 1; }
+
+    /* Right content */
+    .allcat-content {
+      flex: 1; background: var(--gray-100);
+      overflow-y: auto; display: flex; flex-direction: column;
+    }
+    .allcat-content::-webkit-scrollbar { width: 4px; }
+    .allcat-content::-webkit-scrollbar-thumb { background: var(--gray-200); border-radius: 2px; }
+
+    .allcat-content-header {
+      padding: 20px 28px; background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 12px;
+      position: sticky; top: 0; z-index: 1;
+    }
+    .allcat-content-header-left h2 { font-size: 22px; color: var(--bark); margin-bottom: 2px; }
+    .allcat-content-header-left p  { font-size: 13px; color: var(--gray-600); }
+    .allcat-content-header-right { display: flex; gap: 8px; align-items: center; }
+
+    .allcat-tabs {
+      display: flex; gap: 0; border-radius: 8px; overflow: hidden;
+      border: 1.5px solid var(--gray-200); background: var(--white);
+    }
+    .allcat-tab {
+      padding: 7px 16px; font-size: 13px; font-weight: 500;
+      border: none; background: transparent; cursor: pointer;
+      color: var(--gray-600); transition: all .15s; font-family: 'Inter', sans-serif;
+    }
+    .allcat-tab.active { background: var(--clay-d); color: #fff; }
+
+    .allcat-items-grid {
+      padding: 24px 28px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px; align-content: start;
+    }
+    .allcat-empty {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 60px 24px;
+      color: var(--gray-400); text-align: center;
+    }
+    .allcat-empty .empty-icon { font-size: 48px; margin-bottom: 14px; }
+    .allcat-empty p { font-size: 14px; }
+
+    @media (max-width: 700px) {
+      .allcat-sidebar { width: 220px; }
+      .allcat-items-grid { padding: 16px; grid-template-columns: 1fr; }
+    }
+    @media (max-width: 520px) {
+      #allcat-panel { flex-direction: column; }
+      .allcat-sidebar { width: 100%; height: 200px; flex-shrink: 0; border-right: none; border-bottom: 1px solid var(--gray-200); }
+      .allcat-group { display: flex; flex-wrap: wrap; gap: 0; }
+      .allcat-group-label { width: 100%; }
+      .allcat-item { width: 50%; border-left: none; border-bottom: 3px solid transparent; }
+      .allcat-item.active { border-bottom-color: var(--clay-d); border-left: none; }
+    }
+
     /* ─── PROFILE MODAL ─── */
     #profile-overlay {
       position: fixed; inset: 0; z-index: 250;
@@ -1085,7 +1225,7 @@
     <div class="section-inner">
       <div class="section-header">
         <h2>Browse by Category</h2>
-        <a onclick="showToast('All categories page coming soon!')">View all →</a>
+        <a onclick="openAllCategories()" style="cursor:pointer">View all →</a>
       </div>
       <div class="categories-grid" id="cat-grid">
         <div class="cat-pill" onclick="filterByCategory('woodworking')" tabindex="0">
@@ -1727,6 +1867,52 @@
 </div>
 
 <!-- ═══════════════════════════════════════════
+     ALL CATEGORIES PANEL
+════════════════════════════════════════════ -->
+<div id="allcat-overlay" onclick="closeAllCategories()"></div>
+<div id="allcat-panel" role="dialog" aria-modal="true" aria-label="All Categories">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="allcat-sidebar">
+    <div class="allcat-sidebar-header">
+      <h3>All Categories</h3>
+      <button class="allcat-close-btn" onclick="closeAllCategories()" aria-label="Close">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="allcat-search-wrap">
+      <div class="allcat-search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#A89880" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" placeholder="Search categories…" id="allcat-search-input" oninput="filterCatSidebar(this.value)" />
+      </div>
+    </div>
+    <div id="allcat-sidebar-list"></div>
+  </div>
+
+  <!-- RIGHT CONTENT -->
+  <div class="allcat-content" id="allcat-content-area">
+    <div class="allcat-content-header">
+      <div class="allcat-content-header-left">
+        <h2 id="allcat-heading">Select a category</h2>
+        <p id="allcat-subheading">Choose a category from the left to browse</p>
+      </div>
+      <div class="allcat-content-header-right">
+        <div class="allcat-tabs" id="allcat-tabs">
+          <button class="allcat-tab active" onclick="switchCatTab(this,'products')">Products</button>
+          <button class="allcat-tab" onclick="switchCatTab(this,'skills')">Skills</button>
+        </div>
+      </div>
+    </div>
+    <div class="allcat-items-grid" id="allcat-items-grid">
+      <div class="allcat-empty" style="grid-column:1/-1">
+        <div class="empty-icon">👈</div>
+        <p>Pick a category on the left<br>to see all offers</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
      PROFILE MODAL
 ════════════════════════════════════════════ -->
 <div id="profile-overlay" onclick="closeProfile(event)">
@@ -2112,6 +2298,282 @@ let cartCount = 0;
 let favs = new Set();
 let activeCategory = 'all';
 let currentSearch = '';
+
+/* ─── ALL CATEGORIES ─── */
+const ALL_CATEGORIES = [
+  {
+    group: 'Wood & Paper',
+    items: [
+      { id:'woodworking',    icon:'🪵', name:'Woodworking',          count:342, desc:'Furniture, bowls, carvings, shelves and hand-turned pieces.' },
+      { id:'wood-carving',   icon:'🗿', name:'Wood Carving',         count:178, desc:'Decorative figures, relief panels, spoons and sculptures.' },
+      { id:'furniture',      icon:'🪑', name:'Furniture Making',     count:124, desc:'Custom chairs, tables, cabinets and storage pieces.' },
+      { id:'paper',          icon:'📄', name:'Papercraft & Origami', count:95,  desc:'Handmade cards, origami art, paper sculptures and bookbinding.' },
+    ]
+  },
+  {
+    group: 'Clay & Glass',
+    items: [
+      { id:'ceramics',       icon:'🏺', name:'Ceramics & Pottery',   count:518, desc:'Mugs, vases, bowls, tiles and sculptural ceramics.' },
+      { id:'glass',          icon:'🪟', name:'Glass Art',            count:143, desc:'Stained glass, fused glass panels, blown glass and mosaics.' },
+      { id:'mosaic',         icon:'🎨', name:'Mosaic Art',           count:76,  desc:'Decorative mosaic tiles, wall art, mirrors and tabletops.' },
+    ]
+  },
+  {
+    group: 'Metal & Stone',
+    items: [
+      { id:'jewelry',        icon:'💍', name:'Jewelry Making',       count:891, desc:'Rings, necklaces, earrings, bracelets and body jewelry.' },
+      { id:'blacksmithing',  icon:'⚒️',  name:'Blacksmithing',        count:87,  desc:'Forged knives, tools, hooks, gates and decorative ironwork.' },
+      { id:'stone',          icon:'💎', name:'Stone Carving',        count:62,  desc:'Sculptures, gemstone carving, stone coasters and memorial art.' },
+      { id:'metal-art',      icon:'🔩', name:'Metal Art & Welding',  count:113, desc:'Sculptures, wall art, plant stands and industrial décor.' },
+    ]
+  },
+  {
+    group: 'Fiber & Fabric',
+    items: [
+      { id:'textiles',       icon:'🧵', name:'Textiles & Weaving',   count:427, desc:'Blankets, rugs, tapestries, table runners and wall hangings.' },
+      { id:'knitting',       icon:'🧶', name:'Knitting & Crochet',   count:634, desc:'Scarves, hats, sweaters, blankets and amigurumi figures.' },
+      { id:'macrame',        icon:'🪢', name:'Macramé',              count:289, desc:'Wall hangings, plant hangers, table runners and keychains.' },
+      { id:'embroidery',     icon:'🪡', name:'Embroidery & Sewing',  count:372, desc:'Hand-stitched art, patches, clothing and hoop embroidery.' },
+      { id:'quilting',       icon:'🛏️', name:'Quilting',             count:156, desc:'Patchwork quilts, wall quilts, pillow covers and tote bags.' },
+      { id:'lace',           icon:'🕸️', name:'Lace Making',          count:44,  desc:'Bobbin lace, needle lace, tatting and lace collars.' },
+    ]
+  },
+  {
+    group: 'Art & Print',
+    items: [
+      { id:'art',            icon:'🎨', name:'Art & Illustration',   count:673, desc:'Paintings, prints, sketches, digital art and commissions.' },
+      { id:'printmaking',    icon:'🖨️', name:'Printmaking',          count:198, desc:'Linocut, screen print, etching and letterpress prints.' },
+      { id:'calligraphy',    icon:'✒️',  name:'Calligraphy',          count:134, desc:'Hand-lettered signs, quotes, wedding stationery and logos.' },
+      { id:'photography',    icon:'📷', name:'Fine Art Photography', count:87,  desc:'Limited edition prints, nature, portrait and abstract photography.' },
+    ]
+  },
+  {
+    group: 'Home & Living',
+    items: [
+      { id:'home',           icon:'🏠', name:'Home Décor',           count:290, desc:'Wall art, wreaths, vases, frames and seasonal decorations.' },
+      { id:'candles',        icon:'🕯️', name:'Candles & Wax',        count:184, desc:'Soy candles, beeswax, melts, wax seals and aromatherapy.' },
+      { id:'soap',           icon:'🧼', name:'Soap & Bath',          count:221, desc:'Cold process soap, bath bombs, scrubs and natural skincare.' },
+      { id:'resin',          icon:'🔮', name:'Resin Art',            count:167, desc:'Resin trays, coasters, jewelry, keychains and home décor.' },
+      { id:'floral',         icon:'💐', name:'Floral & Botanical',   count:132, desc:'Dried wreaths, pressed flower art, terrariums and potpourri.' },
+    ]
+  },
+  {
+    group: 'Leather & Bags',
+    items: [
+      { id:'leather',        icon:'👜', name:'Leather Crafting',     count:156, desc:'Wallets, bags, belts, journals and monogrammed goods.' },
+      { id:'bags',           icon:'🎒', name:'Bags & Accessories',   count:248, desc:'Tote bags, backpacks, purses, pouches and fabric accessories.' },
+    ]
+  },
+  {
+    group: 'Food & Wellness',
+    items: [
+      { id:'food',           icon:'🍯', name:'Artisan Food & Drink', count:310, desc:'Honey, jams, hot sauce, spice blends and infused oils.' },
+      { id:'herbalism',      icon:'🌿', name:'Herbalism & Wellness', count:94,  desc:'Herbal teas, tinctures, salves, aromatherapy and remedy kits.' },
+    ]
+  },
+  {
+    group: 'Toys & Gifts',
+    items: [
+      { id:'toys',           icon:'🪆', name:'Toys & Dolls',         count:143, desc:'Wooden toys, stuffed animals, puppets and hand-sewn dolls.' },
+      { id:'gifts',          icon:'🎁', name:'Gifts & Keepsakes',    count:387, desc:'Personalized gifts, memorial items, wedding favours and frames.' },
+    ]
+  },
+  {
+    group: 'Clothing & Wearables',
+    items: [
+      { id:'clothing',       icon:'👗', name:'Handmade Clothing',    count:274, desc:'One-of-a-kind garments, upcycled fashion and hand-dyed pieces.' },
+      { id:'accessories',    icon:'🧣', name:'Wearable Accessories', count:319, desc:'Hats, scarves, gloves, headbands and hand-stitched bags.' },
+    ]
+  },
+  {
+    group: 'Music & Play',
+    items: [
+      { id:'music',          icon:'🎸', name:'Musical Instruments',  count:58,  desc:'Hand-built guitars, drums, flutes, ukuleles and percussion.' },
+      { id:'games',          icon:'♟️', name:'Games & Puzzles',      count:72,  desc:'Custom chess sets, wooden puzzles, board games and dice.' },
+    ]
+  },
+];
+
+let _activeCatId   = null;
+let _activeCatTab  = 'products';
+let _catSidebarAll = [];   // flat list for search
+
+function openAllCategories() {
+  document.getElementById('allcat-overlay').classList.add('open');
+  document.getElementById('allcat-panel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  buildCatSidebar(ALL_CATEGORIES);
+  // auto-select first category
+  const first = ALL_CATEGORIES[0].items[0];
+  selectCatItem(first.id);
+}
+
+function closeAllCategories() {
+  document.getElementById('allcat-overlay').classList.remove('open');
+  document.getElementById('allcat-panel').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function buildCatSidebar(groups) {
+  _catSidebarAll = groups.flatMap(g => g.items);
+  const list = document.getElementById('allcat-sidebar-list');
+  list.innerHTML = groups.map(g => `
+    <div class="allcat-group" data-group="${g.group}">
+      <div class="allcat-group-label">${g.group}</div>
+      ${g.items.map(item => catItemHTML(item)).join('')}
+    </div>`).join('');
+}
+
+function catItemHTML(item) {
+  return `
+    <div class="allcat-item ${_activeCatId === item.id ? 'active' : ''}"
+         id="catitem-${item.id}"
+         onclick="selectCatItem('${item.id}')"
+         tabindex="0"
+         onkeydown="if(event.key==='Enter')selectCatItem('${item.id}')">
+      <span class="allcat-item-icon">${item.icon}</span>
+      <div class="allcat-item-text">
+        <div class="cat-name">${item.name}</div>
+        <div class="cat-count">${item.count.toLocaleString()} offers</div>
+      </div>
+      <span class="allcat-item-arrow">›</span>
+    </div>`;
+}
+
+function selectCatItem(id) {
+  _activeCatId = id;
+  // Update active state in sidebar
+  document.querySelectorAll('.allcat-item').forEach(el => {
+    el.classList.toggle('active', el.id === 'catitem-' + id);
+  });
+  // Find category data
+  const cat = _catSidebarAll.find(c => c.id === id);
+  if (!cat) return;
+  // Update header
+  document.getElementById('allcat-heading').textContent = cat.name;
+  document.getElementById('allcat-subheading').textContent = cat.desc;
+  // Reset to products tab
+  _activeCatTab = 'products';
+  document.querySelectorAll('.allcat-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+  renderCatContent(id, 'products');
+}
+
+function switchCatTab(el, tab) {
+  _activeCatTab = tab;
+  document.querySelectorAll('.allcat-tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderCatContent(_activeCatId, tab);
+}
+
+function renderCatContent(catId, tab) {
+  const grid = document.getElementById('allcat-items-grid');
+
+  // Map panel category ids → LISTINGS/SKILLS category field values
+  const CAT_MAP = {
+    woodworking:'woodworking', 'wood-carving':'woodworking', furniture:'woodworking',
+    ceramics:'ceramics', mosaic:'ceramics',
+    jewelry:'jewelry', 'metal-art':'jewelry',
+    textiles:'textiles', knitting:'textiles', macrame:'textiles', embroidery:'textiles', quilting:'textiles', lace:'textiles',
+    art:'art', printmaking:'art', calligraphy:'art', photography:'art',
+    home:'home', candles:'candles', soap:'candles', resin:'home', floral:'home',
+    leather:'leather', bags:'leather',
+    food:'candles', herbalism:'candles',
+    toys:'home', gifts:'home',
+    clothing:'textiles', accessories:'textiles',
+    music:'home', games:'woodworking',
+    paper:'art', glass:'ceramics', blacksmithing:'woodworking', stone:'ceramics',
+  };
+
+  const mapped = CAT_MAP[catId] || catId;
+
+  if (tab === 'products') {
+    const items = LISTINGS.filter(l => l.category === mapped);
+    if (!items.length) { showCatEmpty(grid, 'No products listed yet in this category.'); return; }
+    grid.innerHTML = items.map(l => `
+      <div class="listing-card" onclick="closeAllCategories();openListing(${l.id})" style="cursor:pointer">
+        <div class="listing-img" style="position:relative">
+          <div class="listing-img-placeholder">${l.emoji}</div>
+          ${l.badge ? `<span style="position:absolute;top:12px;left:12px" class="badge ${l.badge==='Sale'?'badge-rust':l.badge==='New'?'badge-moss':'badge-clay'}">${l.badge}</span>` : ''}
+        </div>
+        <div class="listing-body">
+          <div class="listing-seller">
+            <div class="seller-avatar">${l.avatar}</div>
+            <span class="seller-name">${l.seller}</span>
+          </div>
+          <div class="listing-title">${l.title}</div>
+          <div class="listing-meta">
+            <div class="stars">${renderStars(l.rating)}</div>
+            <span class="rating-text">${l.rating} (${l.reviews})</span>
+          </div>
+          <div class="listing-footer">
+            <div class="listing-price">$${l.price}${l.unit ? `<small> / ${l.unit}</small>` : ''}</div>
+            <button class="add-cart" onclick="event.stopPropagation();addToCart(event,${l.id})" aria-label="Add to cart">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>`).join('');
+
+  } else {
+    const items = SKILLS.filter(s => s.category === mapped);
+    if (!items.length) { showCatEmpty(grid, 'No services listed yet in this category.'); return; }
+    grid.innerHTML = items.map(s => `
+      <div class="skill-card" onclick="closeAllCategories();openProfile('${AVATAR_TO_ID[s.avatar]||''}')">
+        <div class="skill-card-top">
+          <div class="skill-emoji-box">${s.emoji}</div>
+          <div class="skill-card-top-text">
+            <div class="skill-title">${s.title}</div>
+            <div class="skill-seller-row">
+              <div class="seller-avatar">${s.avatar}</div>
+              <span>${s.seller}</span>
+              ${s.badge ? `<span class="badge ${s.badge==='Top Rated'?'badge-clay':s.badge==='Bestseller'?'badge-rust':'badge-moss'}" style="margin-left:4px">${s.badge}</span>` : ''}
+            </div>
+          </div>
+        </div>
+        <div class="skill-desc">${s.desc}</div>
+        <div class="skill-footer">
+          <div>
+            <div class="skill-price">$${s.price} <small>/ ${s.unit}</small></div>
+            <div class="skill-meta">
+              <div class="stars">${renderStars(s.rating)}</div>
+              <span class="rating-text">${s.rating} (${s.reviews})</span>
+            </div>
+          </div>
+          <button class="hire-btn" onclick="event.stopPropagation();closeAllCategories();openProfile('${AVATAR_TO_ID[s.avatar]||''}')">Hire</button>
+        </div>
+      </div>`).join('');
+  }
+}
+
+function showCatEmpty(grid, msg) {
+  grid.innerHTML = `
+    <div class="allcat-empty" style="grid-column:1/-1">
+      <div class="empty-icon">🔨</div>
+      <p>${msg}<br><span style="font-size:12px;margin-top:6px;display:block">Be the first to list here!</span></p>
+    </div>`;
+}
+
+function filterCatSidebar(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) { buildCatSidebar(ALL_CATEGORIES); return; }
+  const filtered = ALL_CATEGORIES.map(g => ({
+    ...g,
+    items: g.items.filter(item =>
+      item.name.toLowerCase().includes(q) ||
+      item.desc.toLowerCase().includes(q)
+    )
+  })).filter(g => g.items.length > 0);
+  buildCatSidebar(filtered.length ? filtered : []);
+  const list = document.getElementById('allcat-sidebar-list');
+  if (!filtered.length) {
+    list.innerHTML = `<div style="padding:24px 16px;text-align:center;color:var(--gray-400);font-size:13px">No categories found</div>`;
+  }
+  // Re-mark active
+  if (_activeCatId) {
+    const el = document.getElementById('catitem-' + _activeCatId);
+    if (el) el.classList.add('active');
+  }
+}
 
 /* ─── PROFILE MODAL ─── */
 let currentProfileSeller = null;
@@ -2666,7 +3128,7 @@ function closeModal(e) {
 
 // Close on Escape
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal(); closeProfileDirect(); }
+  if (e.key === 'Escape') { closeModal(); closeProfileDirect(); closeAllCategories(); }
 });
 
 function switchAuthTab(tab) {
