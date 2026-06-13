@@ -712,10 +712,10 @@
     }
     #allcat-panel.open { transform: translateY(0); opacity: 1; pointer-events: all; }
 
-    /* Left sidebar */
+    /* Left sidebar — now full width */
     .allcat-sidebar {
-      width: 280px; flex-shrink: 0;
-      background: var(--white); border-right: 1px solid var(--gray-200);
+      width: 100%; flex-shrink: 0;
+      background: var(--white);
       overflow-y: auto; display: flex; flex-direction: column;
     }
     .allcat-sidebar::-webkit-scrollbar { width: 4px; }
@@ -823,64 +823,8 @@
     .allcat-empty .empty-icon { font-size: 48px; margin-bottom: 14px; }
     .allcat-empty p { font-size: 14px; }
 
-    @media (max-width: 768px) {
-      .allcat-sidebar { width: 240px; }
-      .allcat-items-grid { padding: 16px; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); }
-    }
-
-    /* ── MOBILE: two-step flow ── */
     @media (max-width: 600px) {
-      #allcat-panel {
-        flex-direction: column;
-        top: 56px;
-      }
-
-      /* Sidebar = full screen step 1 */
-      .allcat-sidebar {
-        position: absolute; inset: 0;
-        width: 100%; height: 100%;
-        border-right: none;
-        transform: translateX(0);
-        transition: transform .28s ease;
-        z-index: 2;
-      }
-      /* Content = step 2, hidden to the right */
-      .allcat-content {
-        position: absolute; inset: 0;
-        width: 100%; height: 100%;
-        transform: translateX(100%);
-        transition: transform .28s ease;
-        z-index: 1;
-      }
-
-      /* When a category is selected, slide sidebar out left, content in */
-      #allcat-panel.cat-selected .allcat-sidebar { transform: translateX(-100%); }
-      #allcat-panel.cat-selected .allcat-content  { transform: translateX(0); z-index: 3; }
-
-      /* Mobile back button in content header */
-      .allcat-mobile-back {
-        display: flex !important;
-      }
-
-      /* Stack content header vertically */
-      .allcat-content-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
-        padding: 14px 16px;
-      }
-      .allcat-content-header-right { align-self: stretch; }
-      .allcat-tabs { width: 100%; }
-      .allcat-tab  { flex: 1; text-align: center; }
-
-      /* Tighter grid on mobile */
-      .allcat-items-grid {
-        padding: 12px;
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-
-      /* Sidebar items: icon + text, full width */
+      .allcat-sidebar { width: 100% !important; border-right: none; }
       .allcat-item { padding: 12px 16px; }
       .allcat-group-label { font-size: 9px; padding: 10px 16px 6px; }
       .allcat-sidebar-header { padding: 14px 16px 10px; }
@@ -1940,31 +1884,6 @@
     <div id="allcat-sidebar-list"></div>
   </div>
 
-  <!-- RIGHT CONTENT -->
-  <div class="allcat-content" id="allcat-content-area">
-    <div class="allcat-content-header">
-      <div class="allcat-content-header-left">
-        <button class="allcat-mobile-back" onclick="mobileBackToCategories()" style="display:none;align-items:center;gap:8px;background:none;border:none;cursor:pointer;color:var(--clay-d);font-size:14px;font-weight:600;font-family:'Inter',sans-serif;padding:0 0 6px;margin-bottom:2px">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-          All Categories
-        </button>
-        <h2 id="allcat-heading">Select a category</h2>
-        <p id="allcat-subheading">Choose a category from the left to browse</p>
-      </div>
-      <div class="allcat-content-header-right">
-        <div class="allcat-tabs" id="allcat-tabs">
-          <button class="allcat-tab active" onclick="switchCatTab(this,'products')">Products</button>
-          <button class="allcat-tab" onclick="switchCatTab(this,'skills')">Skills</button>
-        </div>
-      </div>
-    </div>
-    <div class="allcat-items-grid" id="allcat-items-grid">
-      <div class="allcat-empty" style="grid-column:1/-1">
-        <div class="empty-icon">👈</div>
-        <p>Pick a category on the left<br>to see all offers</p>
-      </div>
-    </div>
-  </div>
 </div>
 
 <!-- ═══════════════════════════════════════════
@@ -2458,9 +2377,6 @@ function openAllCategories() {
   document.getElementById('allcat-panel').classList.add('open');
   document.body.style.overflow = 'hidden';
   buildCatSidebar(ALL_CATEGORIES);
-  // auto-select first category
-  const first = ALL_CATEGORIES[0].items[0];
-  selectCatItem(first.id);
 }
 
 function closeAllCategories() {
@@ -2496,22 +2412,9 @@ function catItemHTML(item) {
 }
 
 function selectCatItem(id) {
-  _activeCatId = id;
-  document.querySelectorAll('.allcat-item').forEach(el => {
-    el.classList.toggle('active', el.id === 'catitem-' + id);
-  });
-  const cat = _catSidebarAll.find(c => c.id === id);
-  if (!cat) return;
-  document.getElementById('allcat-heading').textContent = cat.name;
-  document.getElementById('allcat-subheading').textContent = cat.desc;
-  _activeCatTab = 'products';
-  document.querySelectorAll('.allcat-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
-  renderCatContent(id, 'products');
-  // On mobile: slide to content view
-  if (window.innerWidth <= 600) {
-    document.getElementById('allcat-panel').classList.add('cat-selected');
-    document.getElementById('allcat-content-area').scrollTop = 0;
-  }
+  closeAllCategories();
+  filterByCategory(id);
+  showHome();
 }
 
 function mobileBackToCategories() {
