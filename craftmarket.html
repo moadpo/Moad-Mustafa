@@ -387,22 +387,184 @@
       background-repeat: no-repeat; background-position: right 10px center;
     }
 
-    /* Seller dashboard */
+    /* ─── SELLER DASHBOARD ─── */
     #screen-seller { padding-top: 64px; }
-    .seller-dash-hero {
-      background: linear-gradient(120deg, var(--bark) 0%, var(--bark-m) 100%);
-      padding: 48px 24px; color: #fff;
+
+    .sdash-hero {
+      background: linear-gradient(135deg, var(--bark) 0%, #5a3820 60%, var(--bark-m) 100%);
+      padding: 36px 24px 0; color: #fff;
     }
-    .seller-dash-inner { max-width: 1200px; margin: 0 auto; }
-    .seller-dash-inner h1 { font-size: 32px; margin-bottom: 8px; }
-    .seller-dash-inner p { opacity: .8; margin-bottom: 28px; }
-    .dash-stats { display: flex; gap: 16px; flex-wrap: wrap; }
-    .dash-stat {
-      background: rgba(255,255,255,.12); border-radius: var(--radius);
-      padding: 20px 24px; min-width: 140px; backdrop-filter: blur(4px);
+    .sdash-inner { max-width: 1200px; margin: 0 auto; padding: 0 0 28px; }
+    .sdash-top {
+      display: flex; align-items: center; gap: 20px;
+      margin-bottom: 32px; flex-wrap: wrap;
     }
-    .dash-stat .ds-val { font-size: 28px; font-family:'Playfair Display',serif; font-weight: 700; }
-    .dash-stat .ds-lbl { font-size: 12px; opacity: .7; margin-top: 4px; }
+    .sdash-avatar-wrap { position: relative; flex-shrink: 0; }
+    .sdash-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--clay-l); color: var(--clay-d);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px; font-weight: 700; font-family:'Playfair Display',serif;
+      border: 3px solid rgba(255,255,255,.25);
+    }
+    .sdash-online {
+      position: absolute; bottom: 2px; right: 2px;
+      width: 14px; height: 14px; border-radius: 50%;
+      background: #4ade80; border: 2px solid var(--bark);
+    }
+    .sdash-hero-text { flex: 1; min-width: 200px; }
+    .sdash-hero-text h1 { font-size: clamp(20px,3vw,30px); margin-bottom: 4px; }
+    .sdash-hero-text p  { font-size: 14px; opacity: .75; }
+    .sdash-hero-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    .sdash-kpis {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .sdash-kpi {
+      background: rgba(255,255,255,.1); border-radius: var(--radius);
+      padding: 16px 18px; backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .kpi-val { font-size: 26px; font-family:'Playfair Display',serif; font-weight: 700; line-height: 1.1; }
+    .kpi-lbl { font-size: 12px; opacity: .65; margin: 4px 0 6px; }
+    .kpi-delta { font-size: 11px; font-weight: 500; }
+    .kpi-delta.up      { color: #86efac; }
+    .kpi-delta.down    { color: #fca5a5; }
+    .kpi-delta.neutral { color: rgba(255,255,255,.5); }
+
+    /* Tab bar */
+    .sdash-tabs-bar {
+      background: var(--white); border-bottom: 1.5px solid var(--gray-200);
+      position: sticky; top: 64px; z-index: 40;
+    }
+    .sdash-tabs-bar .sdash-inner { padding-bottom: 0; }
+    .sdash-tab {
+      display: inline-flex; align-items: center; gap: 7px;
+      padding: 14px 22px; border: none; background: transparent;
+      font-size: 14px; font-weight: 500; color: var(--gray-600);
+      cursor: pointer; border-bottom: 2.5px solid transparent;
+      transition: all .15s; font-family:'Inter',sans-serif;
+      margin-bottom: -1.5px;
+    }
+    .sdash-tab:hover  { color: var(--bark); }
+    .sdash-tab.active { color: var(--clay-d); border-bottom-color: var(--clay-d); }
+
+    /* Panels */
+    .sdash-panel { padding: 32px 24px; }
+    .sdash-panel .sdash-inner { padding: 0; }
+
+    /* Two-column layout */
+    .dash-two-col { display: grid; grid-template-columns: 1fr 340px; gap: 20px; align-items: start; }
+    .dash-col-main { display: flex; flex-direction: column; }
+    .dash-col-side  { display: flex; flex-direction: column; }
+
+    /* Cards */
+    .dash-card {
+      background: var(--white); border-radius: var(--radius-lg);
+      border: 1px solid var(--gray-200); padding: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .dash-card-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px;
+    }
+    .dash-card-header h3 { font-size: 16px; color: var(--bark); }
+
+    /* Shop stat rows */
+    .shop-stat-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid var(--gray-200); font-size: 14px;
+    }
+    .shop-stat-row:last-child { border-bottom: none; }
+    .shop-stat-row span   { color: var(--gray-600); }
+    .shop-stat-row strong { color: var(--bark); font-weight: 600; }
+
+    /* Manage listings grid */
+    .manage-listings-grid { display: flex; flex-direction: column; gap: 10px; }
+    .manage-listing-row {
+      display: flex; align-items: center; gap: 14px;
+      padding: 14px; border-radius: var(--radius);
+      border: 1px solid var(--gray-200); background: var(--gray-100);
+      transition: background .15s;
+    }
+    .manage-listing-row:hover { background: var(--clay-l); }
+    .ml-emoji { font-size: 28px; flex-shrink: 0; width: 44px; text-align: center; }
+    .ml-info { flex: 1; min-width: 0; }
+    .ml-info .ml-title { font-size: 14px; font-weight: 600; color: var(--bark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .ml-info .ml-meta  { font-size: 12px; color: var(--gray-600); margin-top: 2px; }
+    .ml-price { font-size: 15px; font-weight: 700; color: var(--bark); font-family:'Playfair Display',serif; flex-shrink: 0; }
+    .ml-status { flex-shrink: 0; }
+    .ml-actions { display: flex; gap: 6px; flex-shrink: 0; }
+    .ml-action-btn {
+      width: 30px; height: 30px; border-radius: 6px; border: 1px solid var(--gray-200);
+      background: var(--white); cursor: pointer; display: flex;
+      align-items: center; justify-content: center; color: var(--gray-600);
+      transition: all .15s;
+    }
+    .ml-action-btn:hover { background: var(--clay-d); color: #fff; border-color: var(--clay-d); }
+    .ml-action-btn.del:hover { background: var(--rust); border-color: var(--rust); }
+
+    /* Bar chart */
+    .bar-chart {
+      display: flex; align-items: flex-end; gap: 6px;
+      height: 100px; padding: 0 2px;
+    }
+    .bar-chart .bar {
+      flex: 1; border-radius: 4px 4px 0 0;
+      background: var(--clay-l); transition: background .15s;
+      position: relative; cursor: pointer;
+      min-width: 0;
+    }
+    .bar-chart .bar:hover { background: var(--clay-d); }
+    .bar-chart .bar:hover::after {
+      content: attr(data-val);
+      position: absolute; bottom: calc(100% + 4px); left: 50%;
+      transform: translateX(-50%);
+      background: var(--bark); color: #fff;
+      padding: 3px 7px; border-radius: 4px; font-size: 11px;
+      white-space: nowrap; pointer-events: none;
+    }
+    .bar-chart-labels {
+      display: flex; gap: 6px; padding: 6px 2px 0;
+    }
+    .bar-chart-labels span {
+      flex: 1; text-align: center; font-size: 10px;
+      color: var(--gray-400); min-width: 0;
+      overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+    }
+
+    /* Traffic rows */
+    .traffic-row {
+      display: flex; align-items: center; gap: 10px; font-size: 13px;
+    }
+    .traffic-row > span:first-child { width: 90px; color: var(--gray-600); flex-shrink: 0; }
+    .traffic-row > span:last-child  { width: 36px; text-align: right; color: var(--bark); font-weight: 600; flex-shrink: 0; }
+    .traffic-bar {
+      flex: 1; height: 8px; background: var(--gray-200);
+      border-radius: 4px; overflow: hidden;
+    }
+    .traffic-bar div { height: 100%; border-radius: 4px; transition: width .6s ease; }
+
+    /* Top listings */
+    .top-listing-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid var(--gray-200); font-size: 13px;
+    }
+    .top-listing-row:last-child { border-bottom: none; }
+    .tl-rank { width: 22px; height: 22px; border-radius: 50%; background: var(--clay-l); color: var(--clay-d); font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tl-emoji { font-size: 18px; flex-shrink: 0; }
+    .tl-name { flex: 1; color: var(--bark); font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tl-rev  { font-weight: 700; color: var(--bark); font-family:'Playfair Display',serif; flex-shrink: 0; }
+
+    @media (max-width: 900px) {
+      .dash-two-col { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .sdash-kpis { grid-template-columns: repeat(2,1fr); }
+      .sdash-tab  { padding: 12px 14px; font-size: 13px; }
+    }
 
     /* Toast */
     .toast {
@@ -1161,40 +1323,285 @@
      SCREEN 3 — SELLER DASHBOARD
 ════════════════════════════════════════════ -->
 <div id="screen-seller" class="screen hidden">
-  <div class="seller-dash-hero">
-    <div class="seller-dash-inner">
-      <h1>Welcome back, <span id="seller-name-display">Artisan</span> 👋</h1>
-      <p>Here's what's happening in your shop today.</p>
-      <div class="dash-stats">
-        <div class="dash-stat"><div class="ds-val">$1,240</div><div class="ds-lbl">This Month</div></div>
-        <div class="dash-stat"><div class="ds-val">38</div><div class="ds-lbl">Orders</div></div>
-        <div class="dash-stat"><div class="ds-val">12</div><div class="ds-lbl">Active Listings</div></div>
-        <div class="dash-stat"><div class="ds-val">4.9★</div><div class="ds-lbl">Rating</div></div>
+
+  <!-- Top hero bar -->
+  <div class="sdash-hero">
+    <div class="sdash-inner">
+      <div class="sdash-top">
+        <div class="sdash-avatar-wrap">
+          <div class="sdash-avatar" id="sd-avatar">A</div>
+          <div class="sdash-online"></div>
+        </div>
+        <div class="sdash-hero-text">
+          <h1>Welcome back, <span id="seller-name-display">Artisan</span></h1>
+          <p id="sd-craft-label">Your shop is live and accepting orders</p>
+        </div>
+        <div class="sdash-hero-actions">
+          <button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3)" onclick="switchDashTab('profile')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Edit Profile
+          </button>
+          <button class="btn btn-sm" style="background:var(--clay-d);color:#fff" onclick="showToast('Add listing form coming soon!')">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Add Listing
+          </button>
+        </div>
+      </div>
+      <!-- KPI row -->
+      <div class="sdash-kpis">
+        <div class="sdash-kpi">
+          <div class="kpi-val">$3,840</div>
+          <div class="kpi-lbl">Revenue this month</div>
+          <div class="kpi-delta up">▲ 18% vs last month</div>
+        </div>
+        <div class="sdash-kpi">
+          <div class="kpi-val">124</div>
+          <div class="kpi-lbl">Total orders</div>
+          <div class="kpi-delta up">▲ 9 new this week</div>
+        </div>
+        <div class="sdash-kpi">
+          <div class="kpi-val">2,410</div>
+          <div class="kpi-lbl">Profile views</div>
+          <div class="kpi-delta up">▲ 34% this month</div>
+        </div>
+        <div class="sdash-kpi">
+          <div class="kpi-val">4.9★</div>
+          <div class="kpi-lbl">Average rating</div>
+          <div class="kpi-delta neutral">Based on 86 reviews</div>
+        </div>
+        <div class="sdash-kpi">
+          <div class="kpi-val">12</div>
+          <div class="kpi-lbl">Active listings</div>
+          <div class="kpi-delta down">▼ 2 need restocking</div>
+        </div>
+        <div class="sdash-kpi">
+          <div class="kpi-val">3.2%</div>
+          <div class="kpi-lbl">Conversion rate</div>
+          <div class="kpi-delta up">▲ 0.4% vs last month</div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="section">
-    <div class="section-inner">
-      <div class="section-header">
-        <h2>Your Listings</h2>
-        <button class="btn btn-primary btn-sm" onclick="showToast('Add listing form coming soon!')">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Add Listing
-        </button>
-      </div>
-      <div class="listings-grid" id="seller-listings-grid"></div>
-      <div style="margin-top:48px; text-align:center">
-        <button class="btn btn-outline" onclick="showHome()">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
-          Go to Home
-        </button>
+
+  <!-- Tab nav -->
+  <div class="sdash-tabs-bar">
+    <div class="sdash-inner" style="display:flex;gap:0;padding-top:0;padding-bottom:0">
+      <button class="sdash-tab active" id="dtab-profile"   onclick="switchDashTab('profile')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        My Profile
+      </button>
+      <button class="sdash-tab" id="dtab-listings" onclick="switchDashTab('listings')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        My Listings
+      </button>
+      <button class="sdash-tab" id="dtab-analytics" onclick="switchDashTab('analytics')">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </button>
+    </div>
+  </div>
+
+  <!-- ── TAB: PROFILE ── -->
+  <div id="dpanel-profile" class="sdash-panel">
+    <div class="sdash-inner">
+      <div class="dash-two-col">
+
+        <!-- Left: profile card -->
+        <div class="dash-col-main">
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Public Profile</h3>
+              <button class="btn btn-outline btn-sm" onclick="showToast('Profile saved!')">Save Changes</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--gray-200)">
+              <div class="sdash-avatar" id="sd-avatar2" style="width:72px;height:72px;font-size:28px;flex-shrink:0">A</div>
+              <div>
+                <div style="font-weight:600;color:var(--bark);margin-bottom:4px" id="sd-profile-name">Your Name</div>
+                <div style="font-size:13px;color:var(--gray-600)" id="sd-profile-craft">Your Craft</div>
+                <button class="btn btn-ghost btn-sm" style="margin-top:8px;padding:6px 12px;font-size:12px" onclick="showToast('Photo upload coming soon!')">Change Photo</button>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>First Name</label><input type="text" id="pf-fname" placeholder="Jane" /></div>
+              <div class="form-group"><label>Last Name</label><input type="text" id="pf-lname" placeholder="Doe" /></div>
+            </div>
+            <div class="form-group"><label>Shop / Business Name</label><input type="text" id="pf-shop" placeholder="e.g. Clay & Co." /></div>
+            <div class="form-group">
+              <label>Primary Craft</label>
+              <select id="pf-craft">
+                <option>Woodworking</option><option>Ceramics & Pottery</option>
+                <option>Jewelry Making</option><option>Textiles & Weaving</option>
+                <option>Art & Illustration</option><option>Home Decor</option>
+                <option>Candle Making</option><option>Leather Crafting</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Bio</label><textarea rows="4" id="pf-bio" placeholder="Tell customers about yourself and your craft…" style="resize:vertical"></textarea></div>
+            <div class="form-group"><label>Specialty Tags (comma-separated)</label><input type="text" id="pf-tags" placeholder="e.g. Custom Orders, Wholesale, Eco-Friendly" /></div>
+          </div>
+
+          <div class="dash-card" style="margin-top:20px">
+            <div class="dash-card-header"><h3>Contact & Location</h3></div>
+            <div class="form-row">
+              <div class="form-group"><label>Country</label><input type="text" id="pf-country" placeholder="e.g. United States" /></div>
+              <div class="form-group"><label>City</label><input type="text" id="pf-city" placeholder="e.g. Portland" /></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="pf-phone" placeholder="+1 555 000 0000" /></div>
+              <div class="form-group"><label>Email</label><input type="email" id="pf-email" placeholder="you@example.com" /></div>
+            </div>
+            <div class="form-group"><label>Languages Spoken</label><input type="text" id="pf-lang" placeholder="e.g. English, Spanish" /></div>
+            <div class="form-group"><label>Response Time</label>
+              <select>
+                <option>Within 1 hour</option><option>Within 2 hours</option>
+                <option>Within 4 hours</option><option>Same day</option><option>Within 24 hours</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="showToast('Contact info saved!')">Save Contact Info</button>
+          </div>
+        </div>
+
+        <!-- Right: stats + recent reviews -->
+        <div class="dash-col-side">
+          <div class="dash-card">
+            <div class="dash-card-header"><h3>Shop Stats</h3></div>
+            <div style="display:flex;flex-direction:column;gap:14px">
+              <div class="shop-stat-row"><span>Total Revenue</span><strong>$18,340</strong></div>
+              <div class="shop-stat-row"><span>Total Orders</span><strong>124</strong></div>
+              <div class="shop-stat-row"><span>Active Listings</span><strong>12</strong></div>
+              <div class="shop-stat-row"><span>Repeat Customers</span><strong>38%</strong></div>
+              <div class="shop-stat-row"><span>Average Order Value</span><strong>$67</strong></div>
+              <div class="shop-stat-row"><span>Member Since</span><strong id="sd-member-since">—</strong></div>
+            </div>
+          </div>
+
+          <div class="dash-card" style="margin-top:20px">
+            <div class="dash-card-header"><h3>Recent Reviews</h3><span class="badge badge-clay">4.9 avg</span></div>
+            <div style="display:flex;flex-direction:column;gap:12px" id="sd-recent-reviews"></div>
+          </div>
+
+          <div class="dash-card" style="margin-top:20px;background:linear-gradient(135deg,var(--moss),#3d5c30);color:#fff;border:none">
+            <h4 style="font-size:16px;margin-bottom:8px;color:#fff">Profile Completeness</h4>
+            <div style="background:rgba(255,255,255,.2);border-radius:6px;height:8px;margin-bottom:8px">
+              <div style="background:#fff;height:8px;border-radius:6px;width:78%"></div>
+            </div>
+            <p style="font-size:13px;opacity:.85;margin-bottom:12px">78% complete — add a profile photo and specialty tags to reach 100%.</p>
+            <button class="btn btn-sm" style="background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.3)" onclick="showToast('Tips: add photo, tags, and a detailed bio!')">See Tips</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- ── TAB: LISTINGS ── -->
+  <div id="dpanel-listings" class="sdash-panel hidden">
+    <div class="sdash-inner">
+      <div class="dash-card" style="margin-bottom:20px">
+        <div class="dash-card-header">
+          <h3>My Listings <span class="badge badge-clay" style="margin-left:8px" id="listing-count-badge">12 active</span></h3>
+          <div style="display:flex;gap:10px;align-items:center">
+            <select class="filter-select" onchange="showToast('Filter: '+this.value)" style="border-radius:8px">
+              <option>All Status</option><option>Active</option><option>Draft</option><option>Sold Out</option>
+            </select>
+            <button class="btn btn-primary btn-sm" onclick="showToast('Add listing form coming soon!')">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              New Listing
+            </button>
+          </div>
+        </div>
+        <div class="manage-listings-grid" id="manage-listings-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TAB: ANALYTICS ── -->
+  <div id="dpanel-analytics" class="sdash-panel hidden">
+    <div class="sdash-inner">
+
+      <!-- Period picker -->
+      <div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap">
+        <button class="filter-chip active" onclick="setAnalyticsPeriod(this,'7d')">Last 7 days</button>
+        <button class="filter-chip" onclick="setAnalyticsPeriod(this,'30d')">Last 30 days</button>
+        <button class="filter-chip" onclick="setAnalyticsPeriod(this,'90d')">Last 3 months</button>
+        <button class="filter-chip" onclick="setAnalyticsPeriod(this,'1y')">This year</button>
+      </div>
+
+      <div class="dash-two-col">
+        <div class="dash-col-main">
+
+          <!-- Revenue chart -->
+          <div class="dash-card" style="margin-bottom:20px">
+            <div class="dash-card-header">
+              <h3>Revenue</h3>
+              <span style="font-size:13px;color:var(--gray-600)">Last 7 days</span>
+            </div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;color:var(--bark);margin-bottom:4px">$3,840</div>
+            <div style="font-size:13px;color:var(--moss);margin-bottom:20px">▲ $590 vs previous period</div>
+            <div class="bar-chart" id="revenue-chart"></div>
+            <div class="bar-chart-labels" id="revenue-labels"></div>
+          </div>
+
+          <!-- Orders chart -->
+          <div class="dash-card" style="margin-bottom:20px">
+            <div class="dash-card-header">
+              <h3>Orders</h3>
+              <span style="font-size:13px;color:var(--gray-600)">Last 7 days</span>
+            </div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;color:var(--bark);margin-bottom:4px">38</div>
+            <div style="font-size:13px;color:var(--moss);margin-bottom:20px">▲ 9 vs previous period</div>
+            <div class="bar-chart" id="orders-chart"></div>
+            <div class="bar-chart-labels" id="orders-labels"></div>
+          </div>
+
+          <!-- Views chart -->
+          <div class="dash-card">
+            <div class="dash-card-header">
+              <h3>Profile Views</h3>
+              <span style="font-size:13px;color:var(--gray-600)">Last 7 days</span>
+            </div>
+            <div style="font-size:28px;font-family:'Playfair Display',serif;color:var(--bark);margin-bottom:4px">2,410</div>
+            <div style="font-size:13px;color:var(--moss);margin-bottom:20px">▲ 612 vs previous period</div>
+            <div class="bar-chart" id="views-chart"></div>
+            <div class="bar-chart-labels" id="views-labels"></div>
+          </div>
+        </div>
+
+        <div class="dash-col-side">
+          <!-- Top listings -->
+          <div class="dash-card" style="margin-bottom:20px">
+            <div class="dash-card-header"><h3>Top Listings</h3></div>
+            <div style="display:flex;flex-direction:column;gap:12px" id="top-listings-list"></div>
+          </div>
+
+          <!-- Traffic sources -->
+          <div class="dash-card" style="margin-bottom:20px">
+            <div class="dash-card-header"><h3>Traffic Sources</h3></div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="traffic-row"><span>Search</span><div class="traffic-bar"><div style="width:64%;background:var(--clay-d)"></div></div><span>64%</span></div>
+              <div class="traffic-row"><span>Direct</span><div class="traffic-bar"><div style="width:21%;background:var(--moss)"></div></div><span>21%</span></div>
+              <div class="traffic-row"><span>Social</span><div class="traffic-bar"><div style="width:11%;background:var(--rust)"></div></div><span>11%</span></div>
+              <div class="traffic-row"><span>Other</span><div class="traffic-bar"><div style="width:4%;background:var(--gray-400)"></div></div><span>4%</span></div>
+            </div>
+          </div>
+
+          <!-- Category breakdown -->
+          <div class="dash-card">
+            <div class="dash-card-header"><h3>Sales by Category</h3></div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div class="traffic-row"><span>Products</span><div class="traffic-bar"><div style="width:58%;background:var(--clay-d)"></div></div><span>58%</span></div>
+              <div class="traffic-row"><span>Custom Orders</span><div class="traffic-bar"><div style="width:28%;background:var(--moss)"></div></div><span>28%</span></div>
+              <div class="traffic-row"><span>Workshops</span><div class="traffic-bar"><div style="width:14%;background:var(--rust)"></div></div><span>14%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer>
     <div class="footer-inner">
       <div class="footer-bottom">
         <p>© 2026 CraftMarket. Supporting artisans worldwide.</p>
+        <button class="btn btn-ghost btn-sm" style="color:rgba(255,255,255,.6)" onclick="showHome()">← Back to Marketplace</button>
       </div>
     </div>
   </footer>
@@ -2007,6 +2414,166 @@ function openListing(id) {
   showToast('Opening: ' + l.title);
 }
 
+/* ─── SELLER DASHBOARD ─── */
+
+function switchDashTab(tab) {
+  ['profile','listings','analytics'].forEach(t => {
+    document.getElementById('dtab-' + t).classList.toggle('active', t === tab);
+    document.getElementById('dpanel-' + t).classList.toggle('hidden', t !== tab);
+  });
+  if (tab === 'analytics') renderAnalytics();
+  if (tab === 'listings')  renderManageListings();
+}
+
+function setAnalyticsPeriod(el, period) {
+  document.querySelectorAll('#dpanel-analytics .filter-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderAnalytics(period);
+}
+
+/* Fill profile fields from the registered seller data */
+function populateSellerDash(seller) {
+  const s = seller || {};
+  // Hero avatars
+  ['sd-avatar','sd-avatar2'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = s.avatar || (s.firstName ? s.firstName[0].toUpperCase() : 'A');
+  });
+  document.getElementById('seller-name-display').textContent = s.firstName || s.shopName || 'Artisan';
+  const craftEl = document.getElementById('sd-craft-label');
+  if (craftEl) craftEl.textContent = (s.craft || 'Your Craft') + ' · Your shop is live';
+  const nameEl = document.getElementById('sd-profile-name');
+  if (nameEl) nameEl.textContent = (s.firstName || '') + ' ' + (s.lastName || '') || 'Your Name';
+  const craftLbl = document.getElementById('sd-profile-craft');
+  if (craftLbl) craftLbl.textContent = s.craft || 'Your Craft';
+  // Form fields
+  const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.value = val; };
+  set('pf-fname', s.firstName); set('pf-lname', s.lastName);
+  set('pf-shop', s.shopName);   set('pf-email', s.email);
+  document.getElementById('sd-member-since').textContent = 'June 2026';
+
+  // Recent reviews (pick 3 from a random seller)
+  const sampleRevs = [
+    { name:'Sophie R.', rating:5, date:'Jun 2026', text:'Amazing quality and so fast to respond. Will definitely order again!' },
+    { name:'James T.',  rating:5, date:'Jun 2026', text:'Exactly what I was looking for. Beautifully packaged too.' },
+    { name:'Maria K.',  rating:4, date:'May 2026', text:'Lovely work, very happy with my purchase. Highly recommend.' },
+  ];
+  const revEl = document.getElementById('sd-recent-reviews');
+  if (revEl) {
+    revEl.innerHTML = sampleRevs.map(r => `
+      <div style="padding:12px 0;border-bottom:1px solid var(--gray-200)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div style="display:flex;align-items:center;gap:8px">
+            <div class="seller-avatar" style="width:26px;height:26px;font-size:11px">${r.name[0]}</div>
+            <span style="font-size:13px;font-weight:600;color:var(--bark)">${r.name}</span>
+            <div class="stars">${renderStars(r.rating)}</div>
+          </div>
+          <span style="font-size:11px;color:var(--gray-400)">${r.date}</span>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);line-height:1.5">${r.text}</p>
+      </div>`).join('');
+  }
+}
+
+/* Manage listings table */
+function renderManageListings() {
+  const grid = document.getElementById('manage-listings-grid');
+  if (!grid) return;
+  const statuses = ['Active','Active','Active','Draft','Active','Sold Out','Active','Active','Draft','Active','Active','Active'];
+  grid.innerHTML = LISTINGS.slice(0,12).map((l, i) => {
+    const status = statuses[i] || 'Active';
+    const badgeColor = status==='Active' ? 'badge-moss' : status==='Draft' ? 'badge-clay' : 'badge-rust';
+    return `
+    <div class="manage-listing-row">
+      <div class="ml-emoji">${l.emoji}</div>
+      <div class="ml-info">
+        <div class="ml-title">${l.title}</div>
+        <div class="ml-meta">${l.category} · ${l.reviews} reviews · ★${l.rating}</div>
+      </div>
+      <div class="ml-price">$${l.price}</div>
+      <div class="ml-status"><span class="badge ${badgeColor}">${status}</span></div>
+      <div class="ml-actions">
+        <button class="ml-action-btn" onclick="showToast('Editing: ${l.title.replace(/'/g,"\\'")}')" title="Edit">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+        </button>
+        <button class="ml-action-btn del" onclick="showToast('Delete listing?')" title="Delete">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+  const badge = document.getElementById('listing-count-badge');
+  if (badge) badge.textContent = '12 active';
+}
+
+/* Bar charts */
+const CHART_DATA = {
+  '7d': {
+    labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    revenue: [420, 380, 590, 310, 670, 820, 650],
+    orders:  [5,   4,   8,   3,   9,   11,  7],
+    views:   [280, 310, 420, 290, 510, 640, 480],
+  },
+  '30d': {
+    labels: ['W1','W2','W3','W4'],
+    revenue: [2100, 3400, 2800, 3840],
+    orders:  [28,   44,   36,   38],
+    views:   [1200, 1800, 1600, 2410],
+  },
+  '90d': {
+    labels: ['Apr','May','Jun'],
+    revenue: [8200, 10400, 11600],
+    orders:  [98,   128,   124],
+    views:   [5800, 7200,  8100],
+  },
+  '1y': {
+    labels: ['Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun'],
+    revenue: [3200,4100,3800,5200,6800,7400,5100,4600,7200,8200,10400,11600],
+    orders:  [38,  50,  44,  62,  84,  91,  60,  54,  88,  98,  128,  124],
+    views:   [1800,2300,2100,2900,3800,4200,2900,2600,4100,5800,7200,8100],
+  },
+};
+
+function renderAnalytics(period) {
+  period = period || '7d';
+  const d = CHART_DATA[period] || CHART_DATA['7d'];
+  renderBarChart('revenue-chart', 'revenue-labels', d.revenue, d.labels, val => '$' + val.toLocaleString());
+  renderBarChart('orders-chart',  'orders-labels',  d.orders,  d.labels, val => val + ' orders');
+  renderBarChart('views-chart',   'views-labels',   d.views,   d.labels, val => val.toLocaleString() + ' views');
+  renderTopListings();
+}
+
+function renderBarChart(chartId, labelsId, values, labels, fmt) {
+  const chartEl  = document.getElementById(chartId);
+  const labelsEl = document.getElementById(labelsId);
+  if (!chartEl || !labelsEl) return;
+  const max = Math.max(...values) || 1;
+  chartEl.innerHTML = values.map((v, i) => {
+    const pct = Math.round((v / max) * 100);
+    return `<div class="bar" style="height:${pct}%" data-val="${fmt(v)}" title="${labels[i]}: ${fmt(v)}"></div>`;
+  }).join('');
+  labelsEl.innerHTML = labels.map(l => `<span>${l}</span>`).join('');
+}
+
+function renderTopListings() {
+  const el = document.getElementById('top-listings-list');
+  if (!el) return;
+  const top = [
+    { emoji:'🕯️', title:'Lavender & Sage Soy Candle',    rev:'$840' },
+    { emoji:'☕',  title:'Artisan Speckled Ceramic Mug',   rev:'$612' },
+    { emoji:'👛',  title:'Slim Bifold Leather Wallet',     rev:'$580' },
+    { emoji:'💍',  title:'Hammered Silver Leaf Ring',      rev:'$455' },
+    { emoji:'🪵',  title:'Hand-Turned Oak Serving Board',  rev:'$356' },
+  ];
+  el.innerHTML = top.map((t, i) => `
+    <div class="top-listing-row">
+      <div class="tl-rank">${i+1}</div>
+      <div class="tl-emoji">${t.emoji}</div>
+      <div class="tl-name">${t.title}</div>
+      <div class="tl-rev">${t.rev}</div>
+    </div>`).join('');
+}
+
 /* ─── NAVIGATION ─── */
 function showHome() {
   document.getElementById('screen-role').classList.add('hidden');
@@ -2025,9 +2592,12 @@ function enterAsCustomer() {
 
 function showSellerDash() {
   document.getElementById('screen-home').classList.add('hidden');
+  document.getElementById('screen-role').classList.add('hidden');
   document.getElementById('screen-seller').classList.remove('hidden');
+  document.getElementById('navbar').classList.remove('hidden');
   document.getElementById('nav-seller-btn').style.display = 'flex';
-  renderListings(LISTINGS.slice(0,6), 'seller-listings-grid');
+  switchDashTab('profile');
+  populateSellerDash(window._loggedInSeller || {});
   window.scrollTo(0,0);
 }
 
@@ -2096,15 +2666,22 @@ function handleRegister() {
 }
 
 function handleSellerRegister() {
-  const fname = document.getElementById('s-fname').value;
-  const shop  = document.getElementById('s-shop').value;
+  const fname = document.getElementById('s-fname').value.trim();
+  const lname = document.getElementById('s-lname') ? document.getElementById('s-lname').value.trim() : '';
+  const shop  = document.getElementById('s-shop').value.trim();
+  const email = document.getElementById('s-email').value.trim();
+  const craft = document.getElementById('s-craft').value;
   if (!fname) { showToast('Please fill in your name'); return; }
+  window._loggedInSeller = {
+    firstName: fname, lastName: lname, shopName: shop,
+    email: email, craft: craft,
+    avatar: fname[0].toUpperCase(),
+  };
   closeModal();
   document.getElementById('nav-signin-btn').classList.add('hidden');
-  document.getElementById('nav-avatar').classList.remove('hidden');
-  document.getElementById('nav-avatar').textContent = fname[0].toUpperCase();
-  document.getElementById('nav-seller-btn').style.display = 'flex';
-  document.getElementById('seller-name-display').textContent = fname + (shop ? ` (${shop})` : '');
+  const av = document.getElementById('nav-avatar');
+  av.classList.remove('hidden');
+  av.textContent = fname[0].toUpperCase();
   showToast(`Welcome, ${fname}! Your shop is ready!`);
   showSellerDash();
 }
