@@ -1184,6 +1184,11 @@
         <button class="filter-chip" onclick="filterSkills(this,'leather')">Leather</button>
       </div>
       <div class="skills-grid" id="skills-grid"></div>
+      <div style="text-align:center;margin-top:32px" id="skills-load-more-wrap">
+        <button class="btn btn-outline" id="skills-load-more-btn" onclick="loadMoreSkills()">
+          Load More Services
+        </button>
+      </div>
     </div>
   </div>
 
@@ -2235,13 +2240,13 @@ function closeProfileDirect() {
 }
 
 /* ─── RENDER SKILLS ─── */
-// Map skill avatar initial → seller id
 const AVATAR_TO_ID = { M:'marcus', E:'elena', P:'priya', A:'alma', L:'leo', S:'sara', N:'nina', O:'omar', D:'daniel', C:'chloe', Z:'zara', Y:'yuki', B:'nina2', H:'hana' };
 
-function renderSkills(items) {
-  const grid = document.getElementById('skills-grid');
-  if (!grid) return;
-  grid.innerHTML = items.map(s => `
+let _skillsPool   = [];   // current filtered set
+let _skillsShown  = 0;    // how many cards are in the DOM
+
+function skillCardHTML(s) {
+  return `
     <div class="skill-card" onclick="openProfile('${AVATAR_TO_ID[s.avatar] || ''}')">
       <div class="skill-card-top">
         <div class="skill-emoji-box">${s.emoji}</div>
@@ -2265,8 +2270,43 @@ function renderSkills(items) {
         </div>
         <button class="hire-btn" onclick="event.stopPropagation();openProfile('${AVATAR_TO_ID[s.avatar] || ''}')">Hire</button>
       </div>
-    </div>
-  `).join('');
+    </div>`;
+}
+
+function renderSkills(items) {
+  _skillsPool  = items;
+  _skillsShown = 0;
+  document.getElementById('skills-grid').innerHTML = '';
+  appendSkills(8);
+}
+
+function appendSkills(count) {
+  const grid  = document.getElementById('skills-grid');
+  const batch = _skillsPool.slice(_skillsShown, _skillsShown + count);
+  batch.forEach(s => {
+    const div = document.createElement('div');
+    div.innerHTML = skillCardHTML(s);
+    grid.appendChild(div.firstElementChild);
+  });
+  _skillsShown += batch.length;
+  updateSkillsLoadMore();
+}
+
+function loadMoreSkills() {
+  const btn = document.getElementById('skills-load-more-btn');
+  btn.textContent = 'Loading…';
+  btn.disabled = true;
+  setTimeout(() => {
+    appendSkills(10);
+    btn.textContent = 'Load More Services';
+    btn.disabled = false;
+  }, 400);
+}
+
+function updateSkillsLoadMore() {
+  const wrap = document.getElementById('skills-load-more-wrap');
+  if (!wrap) return;
+  wrap.style.display = _skillsShown >= _skillsPool.length ? 'none' : 'block';
 }
 
 function filterSkills(el, cat) {
