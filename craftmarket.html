@@ -1345,9 +1345,9 @@
         </select>
       </div>
       <div class="listings-grid" id="listings-grid"></div>
-      <div style="text-align:center; margin-top:40px">
-        <button class="btn btn-outline" onclick="showToast('Loading more items...')">
-          Load More Items
+      <div style="text-align:center; margin-top:40px" id="listings-load-more-wrap">
+        <button class="btn btn-outline" id="listings-load-more-btn" onclick="loadMoreListings()">
+          Load More Creations
         </button>
       </div>
     </div>
@@ -2839,10 +2839,11 @@ function filterSkills(el, cat) {
 }
 
 /* ─── RENDER LISTINGS ─── */
-function renderListings(items, containerId) {
-  const grid = document.getElementById(containerId);
-  if (!grid) return;
-  grid.innerHTML = items.map(l => `
+let _listingsPool  = [];
+let _listingsShown = 0;
+
+function listingCardHTML(l) {
+  return `
     <div class="listing-card" onclick="openListing(${l.id})">
       <div class="listing-img" style="position:relative">
         <div class="listing-img-placeholder">${l.emoji}</div>
@@ -2873,7 +2874,50 @@ function renderListings(items, containerId) {
         </div>
       </div>
     </div>
-  `).join('');
+  `;
+}
+
+function renderListings(items, containerId) {
+  if (containerId !== 'listings-grid') {
+    // non-paginated path (dashboard, categories panel)
+    const grid = document.getElementById(containerId);
+    if (grid) grid.innerHTML = items.map(l => listingCardHTML(l)).join('');
+    return;
+  }
+  // paginated home grid
+  _listingsPool  = items;
+  _listingsShown = 0;
+  document.getElementById('listings-grid').innerHTML = '';
+  appendListings(12);
+}
+
+function appendListings(count) {
+  const grid  = document.getElementById('listings-grid');
+  const batch = _listingsPool.slice(_listingsShown, _listingsShown + count);
+  batch.forEach(l => {
+    const div = document.createElement('div');
+    div.innerHTML = listingCardHTML(l);
+    grid.appendChild(div.firstElementChild);
+  });
+  _listingsShown += batch.length;
+  updateListingsLoadMore();
+}
+
+function loadMoreListings() {
+  const btn = document.getElementById('listings-load-more-btn');
+  btn.textContent = 'Loading…';
+  btn.disabled = true;
+  setTimeout(() => {
+    appendListings(10);
+    btn.textContent = 'Load More Creations';
+    btn.disabled = false;
+  }, 400);
+}
+
+function updateListingsLoadMore() {
+  const wrap = document.getElementById('listings-load-more-wrap');
+  if (!wrap) return;
+  wrap.style.display = _listingsShown >= _listingsPool.length ? 'none' : 'block';
 }
 
 function renderSellerCards(sellers) {
