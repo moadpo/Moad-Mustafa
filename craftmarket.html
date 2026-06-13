@@ -3248,15 +3248,27 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db   = firebase.firestore();
 
+// Set persistence to LOCAL so session survives page refreshes
+auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
+
 // Restore session on page load
 auth.onAuthStateChanged(async user => {
-  if (!user) return;
-  const snap = await db.collection('users').doc(user.uid).get();
-  const data = snap.exists ? snap.data() : {};
-  setNavLoggedIn(data.firstName || user.email, user.email[0]);
-  if (data.role === 'crafter') {
-    window._loggedInSeller = { ...data, avatar: (data.firstName || 'U')[0].toUpperCase() };
+  if (!user) {
+    // No user — stay on role screen
+    return;
   }
+  try {
+    const snap = await db.collection('users').doc(user.uid).get();
+    const data = snap.exists ? snap.data() : {};
+    setNavLoggedIn(data.firstName || user.email, (data.firstName || user.email)[0]);
+    if (data.role === 'crafter') {
+      window._loggedInSeller = { ...data, avatar: (data.firstName || 'U')[0].toUpperCase() };
+    }
+  } catch(e) {
+    // Firestore failed — still restore session with basic info from Auth
+    setNavLoggedIn(user.email, user.email[0]);
+  }
+  // Always go to home if still on role screen
   if (!document.getElementById('screen-role').classList.contains('hidden')) showHome();
 });
 
