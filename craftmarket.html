@@ -270,8 +270,64 @@
     .form-note { text-align: center; font-size: 13px; color: var(--gray-400); margin-top: 12px; }
     .form-note a { color: var(--primary); cursor: pointer; font-weight: 600; }
 
+
+    /* ─── CATEGORY BAR (below navbar) ─── */
+    #cat-bar {
+      position: fixed; top: 60px; left: 0; right: 0; z-index: 90;
+      background: #fff; border-bottom: 1px solid var(--border);
+      padding: 0 16px;
+      display: none; /* shown only on home screen */
+    }
+    #cat-bar.visible { display: block; }
+    .cat-bar-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; gap: 0; height: 48px;
+    }
+
+    /* Hamburger "Categories" button */
+    .cat-bar-menu {
+      display: flex; align-items: center; gap: 8px;
+      padding: 0 16px 0 0; margin-right: 12px;
+      border-right: 1px solid var(--border);
+      height: 32px; flex-shrink: 0; cursor: pointer;
+      color: var(--bark); font-size: 13px; font-weight: 700;
+      background: none; border-top: none; border-bottom: none; border-left: none;
+      font-family: 'Inter', sans-serif; transition: color .15s;
+      white-space: nowrap;
+    }
+    .cat-bar-menu:hover { color: var(--primary); }
+    .cat-bar-menu:hover .cat-bar-menu-icon span { background: var(--primary); }
+    .cat-bar-menu-icon {
+      display: flex; flex-direction: column; gap: 4px; width: 18px;
+    }
+    .cat-bar-menu-icon span {
+      display: block; height: 2px; background: var(--bark);
+      border-radius: 2px; transition: background .15s;
+    }
+    .cat-bar-menu-icon span:nth-child(2) { width: 13px; }
+    .cat-bar-menu-icon span:nth-child(3) { width: 16px; }
+
+    /* Pills row */
+    .cat-bar-pills {
+      display: flex; align-items: center; gap: 6px;
+      overflow-x: auto; flex: 1; scrollbar-width: none;
+      padding: 6px 0;
+    }
+    .cat-bar-pills::-webkit-scrollbar { display: none; }
+    .cat-bar-pill {
+      display: flex; align-items: center; gap: 6px;
+      padding: 5px 14px; border-radius: 100px; white-space: nowrap;
+      font-size: 13px; font-weight: 500; cursor: pointer; flex-shrink: 0;
+      border: 1.5px solid var(--border); background: var(--white);
+      color: var(--bark-m); transition: all .15s; font-family: 'Inter', sans-serif;
+    }
+    .cat-bar-pill:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-l); }
+    .cat-bar-pill.active { background: var(--primary); border-color: var(--primary); color: white; }
+
+    /* Adjust home screen padding to account for both bars */
+
     /* ─── HOME PAGE ─── */
-    #screen-home { padding-top: 60px; background: var(--bg); }
+    #screen-home { padding-top: 108px; background: var(--bg); }
 
     /* Hero */
     .hero {
@@ -1343,6 +1399,30 @@
   </div>
 </nav>
 
+<!-- CATEGORY BAR -->
+<div id="cat-bar">
+  <div class="cat-bar-inner">
+    <button class="cat-bar-menu" onclick="openAllCategories()" aria-label="All Categories">
+      <div class="cat-bar-menu-icon">
+        <span></span><span></span><span></span>
+      </div>
+      Categories
+    </button>
+    <div class="cat-bar-pills" id="cat-bar-pills">
+      <div class="cat-bar-pill" onclick="filterByCategory('woodworking',this)">🪵 Woodworking</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('ceramics',this)">🏺 Ceramics</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('jewelry',this)">💍 Jewelry</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('textiles',this)">🧵 Textiles</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('art',this)">🎨 Art & Prints</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('home',this)">🕯️ Home Decor</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('candles',this)">🕯️ Candles</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('leather',this)">👜 Leather</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('paper',this)">📝 Paper Crafts</div>
+      <div class="cat-bar-pill" onclick="filterByCategory('plants',this)">🌿 Plants</div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════════════════════════
      SCREEN 1 — ROLE SELECTION
 ════════════════════════════════════════════ -->
@@ -1411,55 +1491,7 @@
   </div>
 
   <!-- Categories -->
-  <div class="section" style="background:var(--white)">
-    <div class="section-inner">
-      <div class="section-header">
-        <h2>Browse by Category</h2>
-        <a onclick="openAllCategories()" style="cursor:pointer">View all →</a>
-      </div>
-      <div class="categories-grid" id="cat-grid">
-        <div class="cat-pill" onclick="filterByCategory('woodworking')" tabindex="0">
-          <span class="cat-emoji">🪵</span>
-          <span>Woodworking</span>
-          <small>342 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('ceramics')" tabindex="0">
-          <span class="cat-emoji">🏺</span>
-          <span>Ceramics</span>
-          <small>518 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('jewelry')" tabindex="0">
-          <span class="cat-emoji">💍</span>
-          <span>Jewelry</span>
-          <small>891 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('textiles')" tabindex="0">
-          <span class="cat-emoji">🧵</span>
-          <span>Textiles</span>
-          <small>427 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('art')" tabindex="0">
-          <span class="cat-emoji">🎨</span>
-          <span>Art & Prints</span>
-          <small>673 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('home')" tabindex="0">
-          <span class="cat-emoji">🕯️</span>
-          <span>Home Decor</span>
-          <small>290 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('candles')" tabindex="0">
-          <span class="cat-emoji">🕯️</span>
-          <span>Candles</span>
-          <small>184 items</small>
-        </div>
-        <div class="cat-pill" onclick="filterByCategory('leather')" tabindex="0">
-          <span class="cat-emoji">👜</span>
-          <span>Leather</span>
-          <small>156 items</small>
-        </div>
-      </div>
-    </div>
+  <!-- Category bar moved to fixed bar below navbar -->
   </div>
 
   <!-- Featured Listings -->
@@ -3389,6 +3421,7 @@ function showHome() {
   document.getElementById('screen-role').classList.add('hidden');
   document.getElementById('screen-seller').classList.add('hidden');
   document.getElementById('screen-profile').classList.add('hidden');
+  document.getElementById('cat-bar').classList.add('visible');
   document.getElementById('screen-home').classList.remove('hidden');
   document.getElementById('navbar').classList.remove('hidden');
   document.getElementById('nav-seller-btn').style.display = 'none';
@@ -3405,6 +3438,7 @@ function showSellerDash() {
   document.getElementById('screen-home').classList.add('hidden');
   document.getElementById('screen-role').classList.add('hidden');
   document.getElementById('screen-profile').classList.add('hidden');
+  document.getElementById('cat-bar').classList.remove('visible');
   document.getElementById('screen-seller').classList.remove('hidden');
   document.getElementById('navbar').classList.remove('hidden');
   document.getElementById('nav-seller-btn').style.display = 'flex';
@@ -3609,6 +3643,7 @@ function showCustomerProfile() {
   document.getElementById('screen-role').classList.add('hidden');
   document.getElementById('screen-seller').classList.add('hidden');
   document.getElementById('screen-profile').classList.remove('hidden');
+  document.getElementById('cat-bar').classList.remove('visible');
   document.getElementById('navbar').classList.remove('hidden');
   document.getElementById('nav-seller-btn').style.display = 'none';
   window.scrollTo(0, 0);
