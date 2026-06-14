@@ -3718,6 +3718,7 @@ auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch(() => {});
 
 // Restore session on page load
 auth.onAuthStateChanged(async user => {
+  window._cachedUser = user || null;
   if (!user) {
     // No user — stay on role screen
     return;
@@ -3858,7 +3859,7 @@ document.addEventListener('click', e => {
 });
 
 function populateDropdown() {
-  const user = firebase.auth().currentUser;
+  const user = window._cachedUser || firebase.auth().currentUser;
   if (!user) return;
   const isCrafter = window._loggedInSeller && window._loggedInSeller.role === 'crafter';
   const data = window._loggedInSeller || {};
