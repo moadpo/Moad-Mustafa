@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>لوحة التحكم — ماركت هب</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--primary:#2D6A4F;--primary-d:#1B4332;--primary-m:#52B788;--primary-l:#D1FAE5;--accent:#D97706;--accent-l:#FEF3C7;--bg:#F3F4F6;--surface:#fff;--bark:#111827;--bark-m:#374151;--border:#E5E7EB;--gray:#9CA3AF;--radius:12px;}
+body{font-family:'Noto Kufi Arabic','Inter',sans-serif;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;}
+nav{background:#fff;border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;gap:16px;position:sticky;top:0;z-index:100;}
+.nav-logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;color:var(--primary);text-decoration:none;}
+.nav-right{display:flex;align-items:center;gap:10px;margin-right:auto;}
+.btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;font-family:'Noto Kufi Arabic',sans-serif;cursor:pointer;text-decoration:none;border:none;display:inline-flex;align-items:center;gap:6px;transition:.15s;}
+.btn-primary{background:var(--primary);color:#fff;}
+.btn-primary:hover{background:var(--primary-d);}
+.btn-outline{background:transparent;color:var(--bark-m);border:1.5px solid var(--border);}
+
+.layout{display:flex;flex:1;}
+.sidebar{width:220px;background:#fff;border-left:1px solid var(--border);padding:20px 12px;flex-shrink:0;position:sticky;top:60px;height:calc(100vh - 60px);overflow-y:auto;}
+.sidebar-label{font-size:11px;font-weight:700;color:var(--gray);padding:0 12px;margin-bottom:8px;margin-top:20px;}
+.sidebar-label:first-child{margin-top:0;}
+.sidebar-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-size:14px;font-weight:500;color:var(--bark-m);cursor:pointer;transition:.1s;border:none;background:none;width:100%;font-family:'Noto Kufi Arabic',sans-serif;text-decoration:none;}
+.sidebar-item:hover{background:var(--bg);color:var(--bark);}
+.sidebar-item.active{background:var(--primary-l);color:var(--primary);font-weight:600;}
+.sidebar-item svg{flex-shrink:0;}
+
+.main{flex:1;padding:32px 28px 60px;max-width:960px;}
+.page-title{font-size:24px;font-weight:800;margin-bottom:4px;}
+.page-sub{font-size:13px;color:var(--gray);margin-bottom:28px;}
+.panel{display:none;}
+.panel.active{display:block;}
+
+.stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px;}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px;}
+.stat-card .num{font-size:28px;font-weight:800;color:var(--primary);}
+.stat-card .label{font-size:12px;color:var(--gray);margin-top:2px;}
+
+.table-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;}
+.table-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);}
+.table-header h3{font-size:16px;font-weight:700;}
+table{width:100%;border-collapse:collapse;}
+th{text-align:right;font-size:11px;font-weight:700;color:var(--gray);padding:10px 20px;border-bottom:1px solid var(--border);}
+td{padding:14px 20px;border-bottom:1px solid var(--border);font-size:14px;}
+tr:last-child td{border-bottom:none;}
+.td-title{display:flex;align-items:center;gap:12px;}
+.td-img{width:48px;height:48px;border-radius:8px;object-fit:cover;background:var(--bg);}
+.td-name{font-weight:600;}
+.td-cat{font-size:11px;color:var(--gray);}
+.status{display:inline-block;padding:3px 10px;border-radius:6px;font-size:11px;font-weight:700;}
+.status-active{background:var(--primary-l);color:var(--primary);}
+.status-draft{background:#F3F4F6;color:var(--gray);}
+.status-sold{background:var(--accent-l);color:var(--accent);}
+
+.listings-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;}
+.listing-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:.2s;cursor:pointer;text-decoration:none;color:inherit;}
+.listing-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.08);transform:translateY(-3px);}
+.listing-img{height:200px;background:var(--bg);overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.listing-img img{width:100%;height:100%;object-fit:cover;}
+.listing-placeholder{color:var(--gray);}
+.listing-placeholder svg{width:48px;height:48px;}
+.listing-body{padding:16px;}
+.listing-category{font-size:11px;font-weight:700;color:var(--primary);}
+.listing-title{font-size:15px;font-weight:700;margin:6px 0 10px;}
+.listing-meta{display:flex;align-items:center;gap:12px;font-size:13px;}
+.listing-price{font-weight:700;color:var(--primary);font-size:16px;}
+.listing-location{display:flex;align-items:center;gap:4px;color:var(--gray);font-size:12px;}
+
+.conv-list{display:flex;flex-direction:column;}
+.conv-item{display:flex;align-items:center;gap:14px;padding:16px 20px;border-bottom:1px solid var(--border);cursor:pointer;transition:.1s;}
+.conv-item:hover{background:var(--bg);}
+.conv-avatar{width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0;}
+.conv-info{flex:1;min-width:0;}
+.conv-name{font-weight:600;font-size:14px;}
+.conv-last{font-size:13px;color:var(--gray);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.conv-time{font-size:11px;color:var(--gray);flex-shrink:0;}
+.conv-unread{background:var(--primary);color:#fff;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-right:8px;}
+
+.chat-panel{display:none;flex-direction:column;height:400px;}
+.chat-panel.open{display:flex;}
+.chat-back{display:flex;align-items:center;gap:6px;padding:12px 20px;border-bottom:1px solid var(--border);font-size:14px;font-weight:600;color:var(--primary);cursor:pointer;background:none;border-right:none;border-left:none;border-top:none;font-family:'Noto Kufi Arabic',sans-serif;}
+.chat-messages{flex:1;overflow-y:auto;padding:16px 20px;display:flex;flex-direction:column;gap:8px;}
+.msg{max-width:75%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.6;}
+.msg-mine{background:var(--primary);color:#fff;align-self:flex-start;border-bottom-right-radius:4px;}
+.msg-other{background:#fff;border:1px solid var(--border);align-self:flex-end;border-bottom-left-radius:4px;}
+.msg-time{font-size:10px;opacity:.6;margin-top:4px;}
+.chat-input{display:flex;gap:8px;padding:12px 20px;border-top:1px solid var(--border);}
+.chat-input input{flex:1;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Kufi Arabic','Inter',sans-serif;outline:none;}
+.chat-input input:focus{border-color:var(--primary);}
+.chat-input button{padding:10px 20px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-weight:600;cursor:pointer;font-family:'Noto Kufi Arabic',sans-serif;}
+
+.empty{text-align:center;padding:48px 20px;color:var(--gray);font-size:14px;}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+@media(max-width:768px){
+  .sidebar{display:none;}
+  .stats-row{grid-template-columns:1fr;}
+  .main{padding:20px 16px 60px;}
+  td,th{padding:10px 12px;}
+}
+.mobile-tabs{display:none;background:#fff;border-bottom:1px solid var(--border);padding:0 8px;overflow-x:auto;}
+.mobile-tabs button{padding:10px 14px;font-size:13px;font-weight:600;color:var(--gray);background:none;border:none;border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;font-family:'Noto Kufi Arabic',sans-serif;}
+.mobile-tabs button.active{color:var(--primary);border-bottom-color:var(--primary);}
+@media(max-width:768px){.mobile-tabs{display:flex;}}
+</style>
+</head>
+<body>
+<nav>
+  <a href="/" class="nav-logo">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+    ماركت هب
+  </a>
+  <div class="nav-right">
+    <a href="/create-listing.html" class="btn btn-primary">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      إعلان جديد
+    </a>
+  </div>
+</nav>
+<div class="mobile-tabs" id="mobile-tabs"></div>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sidebar-label">نظرة عامة</div>
+    <button class="sidebar-item active" onclick="showPanel('overview')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      لوحة التحكم
+    </button>
+    <div class="sidebar-label">الإعلانات</div>
+    <button class="sidebar-item" onclick="showPanel('listings')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      إعلاناتي
+    </button>
+    <button class="sidebar-item" onclick="showPanel('saved')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+      المحفوظات
+    </button>
+    <div class="sidebar-label">التواصل</div>
+    <button class="sidebar-item" onclick="showPanel('messages')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      الرسائل
+    </button>
+    <div class="sidebar-label">الحساب</div>
+    <button class="sidebar-item" onclick="showPanel('settings')">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      الإعدادات
+    </button>
+    <button class="sidebar-item" onclick="api.logout()" style="color:#EF4444;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      تسجيل الخروج
+    </button>
+  </aside>
+  <main class="main">
+    <div class="panel active" id="panel-overview">
+      <h1 class="page-title" id="greeting">لوحة التحكم</h1>
+      <p class="page-sub">نظرة عامة على نشاطك.</p>
+      <div class="stats-row">
+        <div class="stat-card"><div class="num" id="s-listings">0</div><div class="label">إعلاناتي</div></div>
+        <div class="stat-card"><div class="num" id="s-views">0</div><div class="label">إجمالي المشاهدات</div></div>
+        <div class="stat-card"><div class="num" id="s-saved">0</div><div class="label">المحفوظات</div></div>
+      </div>
+      <div class="table-card">
+        <div class="table-header"><h3>أحدث الإعلانات</h3></div>
+        <div id="recent-listings"><div class="empty"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+    <div class="panel" id="panel-listings">
+      <h1 class="page-title">إعلاناتي</h1>
+      <p class="page-sub">إدارة إعلاناتك النشطة والمسودات.</p>
+      <div class="table-card">
+        <div class="table-header"><h3>جميع الإعلانات</h3><a href="/create-listing.html" class="btn btn-primary" style="padding:8px 16px;font-size:12px;">+ جديد</a></div>
+        <div id="my-listings"><div class="empty"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+    <div class="panel" id="panel-saved">
+      <h1 class="page-title">المحفوظات</h1>
+      <p class="page-sub">الإعلانات التي حفظتها.</p>
+      <div id="saved-listings"><div class="empty"><div class="spinner"></div></div></div>
+    </div>
+    <div class="panel" id="panel-messages">
+      <h1 class="page-title">الرسائل</h1>
+      <p class="page-sub">محادثاتك مع البائعين والمشترين.</p>
+      <div class="table-card">
+        <div class="conv-list" id="conv-list"><div class="empty"><div class="spinner"></div></div></div>
+        <div class="chat-panel" id="chat-panel">
+          <button class="chat-back" onclick="closeChat()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            العودة للمحادثات
+          </button>
+          <div class="chat-messages" id="chat-messages"></div>
+          <div class="chat-input">
+            <input type="text" id="chat-text" placeholder="اكتب رسالة..." onkeydown="if(event.key==='Enter')sendChat()"/>
+            <button onclick="sendChat()">إرسال</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel" id="panel-settings">
+      <h1 class="page-title">إعدادات الحساب</h1>
+      <p class="page-sub">تحديث معلوماتك الشخصية.</p>
+      <div class="table-card" style="padding:24px;">
+        <form onsubmit="saveSettings(event)" style="max-width:500px;">
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:var(--bark-m);margin-bottom:6px;">الاسم</label>
+            <input type="text" id="set-name" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Kufi Arabic','Inter',sans-serif;outline:none;"/>
+          </div>
+          <div style="margin-bottom:16px;">
+            <label style="display:block;font-size:13px;font-weight:600;color:var(--bark-m);margin-bottom:6px;">نبذة عنك</label>
+            <textarea id="set-bio" rows="3" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Kufi Arabic','Inter',sans-serif;outline:none;resize:vertical;"></textarea>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:16px;">
+            <div><label style="display:block;font-size:13px;font-weight:600;color:var(--bark-m);margin-bottom:6px;">الهاتف</label><input type="text" id="set-phone" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Kufi Arabic','Inter',sans-serif;outline:none;"/></div>
+            <div><label style="display:block;font-size:13px;font-weight:600;color:var(--bark-m);margin-bottom:6px;">الموقع</label><input type="text" id="set-location" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:'Noto Kufi Arabic','Inter',sans-serif;outline:none;"/></div>
+          </div>
+          <button type="submit" class="btn btn-primary">حفظ التغييرات</button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>
+<script src="/public/js/api.js"></script>
+<script src="/public/js/app.js"></script>
+<script>
+if (!api.isLoggedIn()) window.location.href = '/signin.html';
+const user = api.getUser();
+if (user) {
+  document.getElementById('greeting').textContent = `مرحباً، ${user.name}`;
+  document.getElementById('set-name').value = user.name || '';
+  document.getElementById('set-bio').value = user.bio || '';
+  document.getElementById('set-phone').value = user.phone || '';
+  document.getElementById('set-location').value = user.location || '';
+}
+const panels = ['overview','listings','saved','messages','settings'];
+const labels = ['لوحة التحكم','إعلاناتي','المحفوظات','الرسائل','الإعدادات'];
+const mobileTabs = document.getElementById('mobile-tabs');
+panels.forEach((p, i) => { mobileTabs.innerHTML += `<button ${i === 0 ? 'class="active"' : ''} onclick="showPanel('${p}')">${labels[i]}</button>`; });
+
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active'));
+  const idx = panels.indexOf(id);
+  const items = document.querySelectorAll('.sidebar-item');
+  if (idx >= 0 && items[idx]) items[idx].classList.add('active');
+  document.querySelectorAll('#mobile-tabs button').forEach((b, i) => b.classList.toggle('active', panels[i] === id));
+  if (id === 'messages') loadConversations();
+  if (id === 'saved') loadSaved();
+}
+let myListings = [];
+async function loadDashboard() {
+  try {
+    const data = await api.getListings({ seller: user?._id });
+    myListings = data.listings || [];
+    const totalViews = myListings.reduce((a, l) => a + (l.views || 0), 0);
+    document.getElementById('s-listings').textContent = myListings.length;
+    document.getElementById('s-views').textContent = totalViews;
+    const statusMap = { active: 'نشط', draft: 'مسودة', sold: 'مُباع' };
+    const listingsHTML = (items) => {
+      if (!items.length) return '<div class="empty">لا توجد إعلانات بعد. <a href="/create-listing.html">أنشئ واحداً</a></div>';
+      return `<table><thead><tr><th>الإعلان</th><th>السعر</th><th>الحالة</th><th>المشاهدات</th><th></th></tr></thead><tbody>
+        ${items.map(l => `<tr><td><div class="td-title">${l.images?.[0] ? `<img src="${l.images[0]}" class="td-img"/>` : ''}<div><div class="td-name">${l.title}</div><div class="td-cat">${getCategoryLabel(l.category)}</div></div></div></td>
+        <td>${l.priceType === 'free' ? 'مجاني' : (l.price || 0) + ' د.إ'}</td>
+        <td><span class="status status-${l.status}">${statusMap[l.status] || l.status}</span></td>
+        <td>${l.views || 0}</td>
+        <td><a href="/listing.html?id=${l._id}" style="color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;">عرض</a></td></tr>`).join('')}</tbody></table>`;
+    };
+    document.getElementById('recent-listings').innerHTML = listingsHTML(myListings.slice(0, 5));
+    document.getElementById('my-listings').innerHTML = listingsHTML(myListings);
+  } catch (e) { document.getElementById('recent-listings').innerHTML = '<div class="empty">فشل تحميل الإعلانات.</div>'; }
+}
+async function loadSaved() {
+  try {
+    const data = await api.getListings();
+    const saved = (data.listings || []).filter(l => l.savedBy?.includes(user?._id));
+    document.getElementById('s-saved').textContent = saved.length;
+    if (!saved.length) { document.getElementById('saved-listings').innerHTML = '<div class="empty">لا توجد محفوظات بعد.</div>'; return; }
+    document.getElementById('saved-listings').innerHTML = `<div class="listings-grid">${saved.map(renderListingCard).join('')}</div>`;
+  } catch (e) { document.getElementById('saved-listings').innerHTML = '<div class="empty">فشل التحميل.</div>'; }
+}
+let currentChatUser = null;
+async function loadConversations() {
+  try {
+    const convs = await api.getConversations();
+    const list = document.getElementById('conv-list');
+    if (!convs.length) { list.innerHTML = '<div class="empty">لا توجد رسائل بعد.</div>'; return; }
+    list.innerHTML = convs.map(c => `<div class="conv-item" onclick="openChat('${c._id}','${c.user.name}')">
+      <div class="conv-avatar">${c.user.name?.charAt(0).toUpperCase() || '?'}</div>
+      <div class="conv-info"><div class="conv-name">${c.user.name}${c.unread ? `<span class="conv-unread">${c.unread}</span>` : ''}</div><div class="conv-last">${c.lastMessage.text}</div></div>
+      <div class="conv-time">${timeAgo(c.lastMessage.createdAt)}</div></div>`).join('');
+  } catch (e) { document.getElementById('conv-list').innerHTML = '<div class="empty">فشل تحميل المحادثات.</div>'; }
+}
+async function openChat(userId, name) {
+  currentChatUser = userId;
+  document.getElementById('conv-list').style.display = 'none';
+  document.getElementById('chat-panel').classList.add('open');
+  const msgs = await api.getMessages(userId);
+  const container = document.getElementById('chat-messages');
+  container.innerHTML = msgs.map(m => `<div class="msg ${m.sender === user?._id ? 'msg-mine' : 'msg-other'}">${m.text}<div class="msg-time">${timeAgo(m.createdAt)}</div></div>`).join('');
+  container.scrollTop = container.scrollHeight;
+}
+function closeChat() { document.getElementById('conv-list').style.display = ''; document.getElementById('chat-panel').classList.remove('open'); currentChatUser = null; }
+async function sendChat() {
+  const input = document.getElementById('chat-text'); const text = input.value.trim(); if (!text || !currentChatUser) return; input.value = '';
+  try { await api.sendMessage({ receiver: currentChatUser, text }); const c = document.getElementById('chat-messages'); c.innerHTML += `<div class="msg msg-mine">${text}<div class="msg-time">الآن</div></div>`; c.scrollTop = c.scrollHeight;
+  } catch (e) { showToast('فشل الإرسال', 'error'); }
+}
+async function saveSettings(e) {
+  e.preventDefault();
+  try { const u = await api.updateMe({ name: document.getElementById('set-name').value, bio: document.getElementById('set-bio').value, phone: document.getElementById('set-phone').value, location: document.getElementById('set-location').value }); api.setUser(u); showToast('تم حفظ الإعدادات!');
+  } catch (e) { showToast('فشل حفظ الإعدادات', 'error'); }
+}
+loadDashboard();
+</script>
+</body>
+</html>

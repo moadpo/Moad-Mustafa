@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>ماركت هب — اشترِ، بِع، شارك مهاراتك ومشاريعك</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --primary:#13C1AC;--primary-d:#0EA899;--primary-l:#E6FAF7;
+  --dark:#253238;--dark-m:#607D8B;--text:#263238;--text-m:#78909C;
+  --bg:#FAFAFA;--surface:#fff;--border:#E8ECED;--gray:#B0BEC5;
+  --accent:#FF6E14;--accent-l:#FFF3EC;
+  --purple:#7C3AED;--purple-l:#EDE9FE;
+  --blue:#2563EB;--blue-l:#DBEAFE;
+  --rose:#E11D48;--rose-l:#FFE4E6;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.06);--shadow-md:0 2px 8px rgba(0,0,0,.08);
+  --shadow-lg:0 8px 24px rgba(0,0,0,.1);--radius:8px;--radius-lg:12px;
+}
+body{font-family:'Noto Kufi Arabic','Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;line-height:1.6;}
+a{text-decoration:none;color:inherit;}
+
+/* ─── TOPBAR ─── */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.topbar-inner{max-width:1280px;margin:0 auto;padding:0 24px;height:64px;display:flex;align-items:center;gap:20px;}
+.logo{display:flex;align-items:center;gap:8px;font-size:22px;font-weight:800;color:var(--primary);flex-shrink:0;}
+.logo svg{flex-shrink:0;}
+.search-box{flex:1;max-width:600px;position:relative;}
+.search-box input{width:100%;padding:10px 44px 10px 16px;border:2px solid var(--border);border-radius:20px;font-size:14px;font-family:'Noto Kufi Arabic',sans-serif;color:var(--text);outline:none;background:var(--bg);transition:.2s;}
+.search-box input:focus{border-color:var(--primary);background:#fff;}
+.search-box button{position:absolute;left:4px;top:50%;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;}
+.search-box button:hover{background:var(--primary-d);}
+.topbar-actions{display:flex;align-items:center;gap:12px;margin-right:auto;}
+.topbar-btn{padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;font-family:'Noto Kufi Arabic',sans-serif;cursor:pointer;border:none;transition:.15s;display:inline-flex;align-items:center;gap:6px;}
+.topbar-btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--border);}
+.topbar-btn-outline:hover{border-color:var(--primary);color:var(--primary);}
+.topbar-btn-primary{background:var(--primary);color:#fff;}
+.topbar-btn-primary:hover{background:var(--primary-d);}
+.topbar-avatar{width:36px;height:36px;border-radius:50%;background:var(--primary);color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;}
+.nav-auth{display:none;}
+.dropdown{position:absolute;top:46px;left:0;background:#fff;border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);min-width:200px;display:none;overflow:hidden;z-index:50;}
+.dropdown.open{display:block;}
+.dropdown a{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:14px;color:var(--text-m);transition:.1s;}
+.dropdown a:hover{background:var(--bg);}
+.dropdown a.danger{color:#E53935;}
+
+/* ─── CATEGORY BAR ─── */
+.catbar{background:var(--surface);border-bottom:1px solid var(--border);}
+.catbar-inner{max-width:1280px;margin:0 auto;padding:0 24px;display:flex;align-items:center;gap:4px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.catbar-inner::-webkit-scrollbar{display:none;}
+.catbar-item{padding:12px 16px;font-size:13px;font-weight:600;color:var(--text-m);white-space:nowrap;cursor:pointer;border-bottom:2px solid transparent;transition:.15s;flex-shrink:0;}
+.catbar-item:hover,.catbar-item.active{color:var(--primary);border-bottom-color:var(--primary);}
+
+/* ─── SECTIONS ─── */
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px;}
+.section{padding:32px 0;}
+.section-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.section-head h2{font-size:20px;font-weight:800;color:var(--text);}
+.section-link{font-size:13px;font-weight:600;color:var(--primary);}
+
+/* ─── HERO CAROUSEL ─── */
+.hero-carousel{padding-top:24px;}
+.slides{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:8px;}
+.slides::-webkit-scrollbar{display:none;}
+.slide{min-width:100%;scroll-snap-align:start;border-radius:var(--radius-lg);padding:44px 48px;color:#fff;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;}
+.slide::after{content:'';position:absolute;left:-80px;top:-80px;width:250px;height:250px;background:rgba(255,255,255,.06);border-radius:50%;}
+.slide-1{background:linear-gradient(135deg,#13C1AC,#0EA899);}
+.slide-2{background:linear-gradient(135deg,#7C3AED,#5B21B6);}
+.slide-3{background:linear-gradient(135deg,#FF6E14,#EA580C);}
+.slide-text{position:relative;max-width:460px;}
+.slide-text h2{font-size:26px;font-weight:800;line-height:1.4;margin-bottom:10px;}
+.slide-text p{font-size:14px;opacity:.88;line-height:1.8;margin-bottom:20px;}
+.slide-cta{display:inline-flex;align-items:center;gap:8px;padding:11px 26px;background:#fff;border-radius:24px;font-size:13px;font-weight:700;transition:.15s;}
+.slide-1 .slide-cta{color:#0EA899;}
+.slide-2 .slide-cta{color:#7C3AED;}
+.slide-3 .slide-cta{color:#EA580C;}
+.slide-cta:hover{opacity:.9;transform:translateY(-1px);}
+.slide-dots{display:flex;gap:8px;justify-content:center;margin-top:16px;}
+.slide-dot{width:8px;height:8px;border-radius:50%;background:var(--border);cursor:pointer;transition:.2s;border:none;}
+.slide-dot.active{background:var(--primary);width:24px;border-radius:4px;}
+
+/* ─── THEMED COLLECTIONS ─── */
+.collections{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
+.collection{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;cursor:pointer;transition:.2s;display:flex;align-items:center;gap:16px;}
+.collection:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.coll-icon{width:52px;height:52px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.coll-icon svg{width:24px;height:24px;}
+.coll-text h4{font-size:14px;font-weight:700;margin-bottom:2px;}
+.coll-text p{font-size:12px;color:var(--text-m);}
+
+/* ─── LISTING GRID ─── */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;cursor:pointer;transition:.2s;}
+.card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px);}
+.card-img{width:100%;aspect-ratio:1;background:var(--bg);overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative;}
+.card-img img{width:100%;height:100%;object-fit:cover;}
+.card-img svg{width:40px;height:40px;color:var(--gray);}
+.card-badge{position:absolute;top:8px;right:8px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;background:var(--primary);color:#fff;}
+.card-body{padding:12px 14px;}
+.card-price{font-size:17px;font-weight:800;color:var(--text);margin-bottom:4px;}
+.card-title{font-size:13px;color:var(--text-m);font-weight:400;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.5;margin-bottom:6px;}
+.card-meta{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--gray);}
+.card-meta svg{width:12px;height:12px;}
+
+/* ─── FOR YOU TABS ─── */
+.tab-bar{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;scrollbar-width:none;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab-pill{padding:8px 20px;border-radius:20px;font-size:13px;font-weight:600;color:var(--text-m);background:var(--surface);border:1px solid var(--border);cursor:pointer;white-space:nowrap;transition:.15s;flex-shrink:0;}
+.tab-pill:hover{border-color:var(--primary);color:var(--primary);}
+.tab-pill.active{background:var(--primary);color:#fff;border-color:var(--primary);}
+
+/* ─── SPOTLIGHT CARDS ─── */
+.spotlight-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.spotlight{border-radius:var(--radius-lg);padding:32px;color:#fff;position:relative;overflow:hidden;transition:.2s;}
+.spotlight:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg);}
+.spotlight::after{content:'';position:absolute;left:-40px;bottom:-40px;width:160px;height:160px;background:rgba(255,255,255,.08);border-radius:50%;}
+.spotlight h3{font-size:20px;font-weight:800;margin-bottom:8px;position:relative;}
+.spotlight p{font-size:13px;opacity:.85;line-height:1.7;margin-bottom:16px;position:relative;max-width:300px;}
+.spotlight-link{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:#fff;position:relative;padding:8px 20px;background:rgba(255,255,255,.2);border-radius:20px;transition:.15s;}
+.spotlight-link:hover{background:rgba(255,255,255,.3);}
+.sp-skills{background:linear-gradient(135deg,#7C3AED,#5B21B6);}
+.sp-projects{background:linear-gradient(135deg,#2563EB,#1D4ED8);}
+.sp-crafts{background:linear-gradient(135deg,#E11D48,#BE123C);}
+.sp-housing{background:linear-gradient(135deg,#D97706,#B45309);}
+
+/* ─── HOW IT WORKS ─── */
+.how-bar{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden;}
+.how-item{padding:28px 20px;text-align:center;border-left:1px solid var(--border);}
+.how-item:last-child{border-left:none;}
+.how-num{width:36px;height:36px;border-radius:50%;background:var(--primary-l);color:var(--primary);font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;}
+.how-item h4{font-size:13px;font-weight:700;margin-bottom:4px;}
+.how-item p{font-size:11px;color:var(--text-m);line-height:1.6;}
+
+/* ─── CTA BANNER ─── */
+.cta-banner{background:var(--dark);border-radius:var(--radius-lg);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;color:#fff;gap:24px;}
+.cta-banner h3{font-size:20px;font-weight:800;margin-bottom:6px;}
+.cta-banner p{font-size:13px;opacity:.7;line-height:1.7;}
+.cta-btn{padding:12px 28px;background:var(--primary);color:#fff;border-radius:24px;font-size:14px;font-weight:700;flex-shrink:0;transition:.15s;}
+.cta-btn:hover{background:var(--primary-d);}
+
+/* ─── FOOTER ─── */
+footer{background:var(--surface);border-top:1px solid var(--border);margin-top:48px;}
+.footer-inner{max-width:1280px;margin:0 auto;padding:40px 24px 24px;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;}
+.footer-brand{font-size:18px;font-weight:800;color:var(--primary);margin-bottom:10px;}
+.footer-desc{font-size:12px;color:var(--text-m);line-height:1.8;}
+.footer-col h4{font-size:12px;font-weight:700;color:var(--text-m);margin-bottom:14px;letter-spacing:.04em;}
+.footer-col a{display:block;font-size:13px;color:var(--text-m);margin-bottom:8px;transition:.15s;}
+.footer-col a:hover{color:var(--primary);}
+.footer-bottom{max-width:1280px;margin:0 auto;padding:16px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--gray);text-align:center;}
+
+/* ─── UTILS ─── */
+.empty-state{text-align:center;padding:60px 24px;color:var(--text-m);}
+.empty-state svg{width:48px;height:48px;margin-bottom:12px;color:var(--gray);}
+.spinner{display:inline-block;width:24px;height:24px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .6s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideIn{from{transform:translateX(-40px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .topbar-inner{gap:12px;padding:0 16px;}
+  .topbar-actions .topbar-btn span{display:none;}
+  .slide{padding:28px 24px;}
+  .slide-text h2{font-size:20px;}
+  .spotlight-grid{grid-template-columns:1fr;}
+  .how-bar{grid-template-columns:1fr 1fr;}
+  .how-item:nth-child(2){border-left:none;}
+  .how-item:nth-child(3){border-top:1px solid var(--border);}
+  .how-item:nth-child(4){border-top:1px solid var(--border);border-left:none;}
+  .cta-banner{flex-direction:column;text-align:center;padding:28px 24px;}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:24px;}
+  .grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;}
+  .card-body{padding:10px 12px;}
+  .card-price{font-size:15px;}
+  .wrap{padding:0 16px;}
+  .collections{grid-template-columns:1fr;}
+}
+@media(max-width:480px){
+  .footer-inner{grid-template-columns:1fr;}
+  .grid{grid-template-columns:1fr 1fr;gap:8px;}
+  .how-bar{grid-template-columns:1fr;}
+  .how-item{border-left:none!important;border-top:1px solid var(--border);}
+  .how-item:first-child{border-top:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <a href="/" class="logo">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
+      ماركت هب
+    </a>
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="ابحث عن منتجات، مهارات، مشاريع..." onkeydown="if(event.key==='Enter')doSearch()"/>
+      <button onclick="doSearch()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+    <div class="topbar-actions">
+      <a href="/create-listing.html" class="topbar-btn topbar-btn-primary nav-auth" style="display:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>أضف إعلان</span>
+      </a>
+      <div class="topbar-avatar nav-auth" style="display:none;" onclick="document.querySelector('.dropdown').classList.toggle('open')">
+        <span class="nav-avatar">?</span>
+        <div class="dropdown">
+          <a href="/dashboard.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+          <a href="/profile.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>ملفي الشخصي</a>
+          <a href="#" class="danger" onclick="api.logout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>تسجيل الخروج</a>
+        </div>
+      </div>
+      <a href="/signin.html" class="topbar-btn topbar-btn-outline nav-guest"><span>تسجيل الدخول</span></a>
+      <a href="/create-listing.html" class="topbar-btn topbar-btn-primary nav-guest">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        <span>أضف إعلان</span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- CATEGORY BAR -->
+<nav class="catbar">
+  <div class="catbar-inner" id="catbar"></div>
+</nav>
+
+<div class="wrap">
+
+<!-- HERO CAROUSEL -->
+<section class="hero-carousel">
+  <div class="slides" id="slides">
+    <div class="slide slide-1">
+      <div class="slide-text">
+        <h2>اشترِ وبِع أي شيء بكل سهولة</h2>
+        <p>من الإلكترونيات والأثاث إلى السيارات والعقارات — كل شيء في مكان واحد.</p>
+        <a href="/create-listing.html" class="slide-cta">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          ابدأ البيع مجاناً
+        </a>
+      </div>
+    </div>
+    <div class="slide slide-2">
+      <div class="slide-text">
+        <h2>شارك مهاراتك واعرض خدماتك</h2>
+        <p>مصمم؟ مبرمج؟ مدرّس؟ اعرض مهاراتك على آلاف الأشخاص الباحثين عن خبراء مثلك.</p>
+        <a href="/create-listing.html" class="slide-cta">اعرض مهاراتك الآن</a>
+      </div>
+    </div>
+    <div class="slide slide-3">
+      <div class="slide-text">
+        <h2>أطلق مشروعك وابحث عن شركاء</h2>
+        <p>عندك فكرة مشروع؟ شاركها مع مجتمعنا وابحث عن شركاء ومستثمرين ومواهب.</p>
+        <a href="/create-listing.html" class="slide-cta">انشر مشروعك</a>
+      </div>
+    </div>
+  </div>
+  <div class="slide-dots" id="slide-dots"></div>
+</section>
+
+<!-- THEMED COLLECTIONS -->
+<section class="section">
+  <div class="section-head"><h2>اكتشف حسب اهتمامك</h2></div>
+  <div class="collections">
+    <a href="/?category=product" class="collection">
+      <div class="coll-icon" style="background:var(--primary-l);color:var(--primary);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+      </div>
+      <div class="coll-text"><h4>إلكترونيات وأجهزة</h4><p>هواتف، لابتوبات، أجهزة منزلية</p></div>
+    </a>
+    <a href="/?category=skill" class="collection">
+      <div class="coll-icon" style="background:var(--purple-l);color:var(--purple);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
+      </div>
+      <div class="coll-text"><h4>دروس خصوصية ومهارات</h4><p>تعلّم أو علّم — لغات، برمجة، تصميم</p></div>
+    </a>
+    <a href="/?category=service" class="collection">
+      <div class="coll-icon" style="background:var(--accent-l);color:var(--accent);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+      </div>
+      <div class="coll-text"><h4>خدمات منزلية ومهنية</h4><p>صيانة، تنظيف، نقل أثاث، تصوير</p></div>
+    </a>
+    <a href="/?category=housing" class="collection">
+      <div class="coll-icon" style="background:var(--blue-l);color:var(--blue);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      </div>
+      <div class="coll-text"><h4>شقق وعقارات</h4><p>للبيع أو الإيجار — شقق، فلل، أراضي</p></div>
+    </a>
+    <a href="/?category=vehicle" class="collection">
+      <div class="coll-icon" style="background:var(--rose-l);color:var(--rose);">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+      </div>
+      <div class="coll-text"><h4>سيارات ومركبات</h4><p>سيارات، دراجات، قطع غيار</p></div>
+    </a>
+    <a href="/?category=project" class="collection">
+      <div class="coll-icon" style="background:#FEF3C7;color:#D97706;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+      </div>
+      <div class="coll-text"><h4>مشاريع وأفكار</h4><p>شارك مشروعك أو ابحث عن شريك</p></div>
+    </a>
+  </div>
+</section>
+
+<!-- SPOTLIGHT: SKILLS, PROJECTS, CRAFTS, HOUSING -->
+<section class="section" style="padding-top:8px;">
+  <div class="section-head"><h2>ليس مجرد سوق — بل مجتمع</h2></div>
+  <div class="spotlight-grid">
+    <a href="/?category=skill" class="spotlight sp-skills">
+      <h3>اعرض مهاراتك على العالم</h3>
+      <p>مصمم جرافيك؟ مبرمج؟ مدرّس لغات؟ معلّم قرآن؟ آلاف الأشخاص يبحثون عن خبراء مثلك.</p>
+      <span class="spotlight-link">تصفح المهارات <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a href="/?category=project" class="spotlight sp-projects">
+      <h3>أطلق مشروعك من هنا</h3>
+      <p>شارك فكرة مشروعك، ابحث عن مستثمرين أو شركاء تقنيين، أو انضم لمشروع قائم.</p>
+      <span class="spotlight-link">تصفح المشاريع <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a href="/?category=other" class="spotlight sp-crafts">
+      <h3>حِرف يدوية وإبداعات</h3>
+      <p>صناعات يدوية، فنون، حلويات منزلية، ملابس مصممة — اعرض إبداعك وبِع مباشرة.</p>
+      <span class="spotlight-link">تصفح الحِرف <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+    <a href="/?category=housing" class="spotlight sp-housing">
+      <h3>ابحث عن سكنك القادم</h3>
+      <p>شقق مفروشة، غرف مشتركة، فلل للإيجار — تصفح العقارات المتاحة في مدينتك.</p>
+      <span class="spotlight-link">تصفح العقارات <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
+    </a>
+  </div>
+</section>
+
+<!-- LISTINGS WITH FILTER TABS -->
+<section class="section" id="listings">
+  <div class="section-head">
+    <h2>أحدث الإعلانات</h2>
+    <a href="#" class="section-link" onclick="loadListings()">عرض الكل</a>
+  </div>
+  <div class="tab-bar" id="tab-bar"></div>
+  <div id="listings-container">
+    <div style="text-align:center;padding:40px;"><div class="spinner"></div></div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+  <div class="section-head"><h2>كيف يعمل ماركت هب؟</h2></div>
+  <div class="how-bar">
+    <div class="how-item">
+      <div class="how-num">١</div>
+      <h4>سجّل مجاناً</h4>
+      <p>أنشئ حسابك في ثوانٍ وابدأ رحلتك.</p>
+    </div>
+    <div class="how-item">
+      <div class="how-num">٢</div>
+      <h4>أضف إعلانك</h4>
+      <p>صور، وصف، وسعر — وانشره للجميع.</p>
+    </div>
+    <div class="how-item">
+      <div class="how-num">٣</div>
+      <h4>تواصل مباشرة</h4>
+      <p>راسل البائع أو المشتري واتفقوا على التفاصيل.</p>
+    </div>
+    <div class="how-item">
+      <div class="how-num">٤</div>
+      <h4>أتمّ الصفقة</h4>
+      <p>قابل الشخص أو اتفق على التوصيل.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="section">
+  <div class="cta-banner">
+    <div>
+      <h3>عندك شيء تعرضه؟</h3>
+      <p>سواء كان منتج، مهارة، مشروع، حِرفة، أو خدمة — انشر إعلانك الآن مجاناً وابدأ بالوصول لآلاف الأشخاص.</p>
+    </div>
+    <a href="/create-listing.html" class="cta-btn">أضف إعلانك مجاناً</a>
+  </div>
+</section>
+
+</div><!-- /wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-brand">ماركت هب</div>
+      <p class="footer-desc">السوق الشامل لكل شيء. اشترِ، بِع، اعرض مهاراتك، شارك مشاريعك، وابحث عن عقارات وخدمات — مجتمع واحد يجمع الجميع.</p>
+    </div>
+    <div class="footer-col">
+      <h4>استكشف</h4>
+      <a href="/">الرئيسية</a>
+      <a href="/dashboard.html">لوحة التحكم</a>
+      <a href="/create-listing.html">أضف إعلان</a>
+      <a href="/contact.html">تواصل معنا</a>
+    </div>
+    <div class="footer-col">
+      <h4>الفئات</h4>
+      <a href="/?category=product">منتجات</a>
+      <a href="/?category=skill">مهارات</a>
+      <a href="/?category=housing">عقارات</a>
+      <a href="/?category=service">خدمات</a>
+      <a href="/?category=project">مشاريع</a>
+      <a href="/?category=vehicle">مركبات</a>
+    </div>
+    <div class="footer-col">
+      <h4>الدعم</h4>
+      <a href="/contact.html">مركز المساعدة</a>
+      <a href="#">الشروط والأحكام</a>
+      <a href="#">سياسة الخصوصية</a>
+      <a href="#">كيف يعمل ماركت هب</a>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2026 ماركت هب. جميع الحقوق محفوظة.</div>
+</footer>
+
+<script src="/public/js/api.js"></script>
+<script src="/public/js/app.js"></script>
+<script>
+// Category bar
+const catbar = document.getElementById('catbar');
+const curCat = new URLSearchParams(location.search).get('category') || '';
+[{id:'', label:'الكل'}, ...CATEGORIES].forEach(c => {
+  catbar.innerHTML += `<a href="/${c.id ? '?category='+c.id : ''}" class="catbar-item${curCat === c.id ? ' active' : ''}">${c.label}</a>`;
+});
+
+// Tab bar (pill filters)
+const tabBar = document.getElementById('tab-bar');
+[{id:'', label:'الكل'}, ...CATEGORIES].forEach(c => {
+  tabBar.innerHTML += `<button class="tab-pill${curCat === c.id ? ' active' : ''}" onclick="filterCat('${c.id}')">${c.label}</button>`;
+});
+
+// Carousel
+const slides = document.getElementById('slides');
+const dotsContainer = document.getElementById('slide-dots');
+const slideCount = slides.children.length;
+let currentSlide = 0;
+
+for (let i = 0; i < slideCount; i++) {
+  dotsContainer.innerHTML += `<button class="slide-dot${i === 0 ? ' active' : ''}" onclick="goSlide(${i})"></button>`;
+}
+
+function goSlide(n) {
+  currentSlide = n;
+  slides.children[n].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  document.querySelectorAll('.slide-dot').forEach((d, i) => d.classList.toggle('active', i === n));
+}
+
+setInterval(() => { currentSlide = (currentSlide + 1) % slideCount; goSlide(currentSlide); }, 5000);
+
+// Wallapop-style card
+function renderCard(l) {
+  const img = l.images && l.images.length ? l.images[0] : '';
+  const priceText = l.priceType === 'free' ? 'مجاني' : `${l.price?.toLocaleString() || 0} د.إ`;
+  return `
+    <a href="/listing.html?id=${l._id}" class="card">
+      <div class="card-img">
+        ${img ? `<img src="${img}" alt="${l.title}" loading="lazy"/>` : getCategoryIcon(l.category)}
+        <span class="card-badge">${getCategoryLabel(l.category)}</span>
+      </div>
+      <div class="card-body">
+        <div class="card-price">${priceText}</div>
+        <div class="card-title">${l.title}</div>
+        <div class="card-meta">
+          ${l.location ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>${l.location}` : ''}
+          ${l.location && l.createdAt ? ' · ' : ''}${timeAgo(l.createdAt)}
+        </div>
+      </div>
+    </a>`;
+}
+
+// Load listings
+const params = new URLSearchParams(location.search);
+if (params.get('search')) document.getElementById('search-input').value = params.get('search');
+
+let activeFilter = curCat;
+
+function filterCat(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+  event.target.classList.add('active');
+  loadListings();
+}
+
+async function loadListings() {
+  const container = document.getElementById('listings-container');
+  container.innerHTML = '<div style="text-align:center;padding:40px;"><div class="spinner"></div></div>';
+  try {
+    const p = {};
+    if (activeFilter) p.category = activeFilter;
+    const search = params.get('search') || document.getElementById('search-input').value;
+    if (search) p.search = search;
+    const data = await api.getListings(p);
+    if (!data.listings || data.listings.length === 0) {
+      container.innerHTML = `<div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><p>لا توجد إعلانات في هذه الفئة بعد. كن أول من ينشر!</p></div>`;
+      return;
+    }
+    container.innerHTML = `<div class="grid">${data.listings.map(renderCard).join('')}</div>`;
+  } catch (e) {
+    container.innerHTML = `<div class="empty-state"><p>تعذّر تحميل الإعلانات.</p></div>`;
+  }
+}
+
+function doSearch() {
+  const search = document.getElementById('search-input').value;
+  const q = new URLSearchParams();
+  if (search) q.set('search', search);
+  window.location.href = '/?' + q.toString();
+}
+
+loadListings();
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.topbar-avatar')) document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
+});
+</script>
+</body>
+</html>
