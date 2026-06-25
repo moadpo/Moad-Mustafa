@@ -17,7 +17,7 @@ const api = {
   logout() {
     this.removeToken();
     this.removeUser();
-    window.location.href = '/signin.html';
+    window.location.href = 'signin.html';
   },
 
   async request(endpoint, options = {}) {

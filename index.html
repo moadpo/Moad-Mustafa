@@ -189,7 +189,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 <!-- TOPBAR -->
 <header class="topbar">
   <div class="topbar-inner">
-    <a href="/" class="logo">
+    <a href="index.html" class="logo">
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
       ماركت هب
     </a>
@@ -200,20 +200,20 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
       </button>
     </div>
     <div class="topbar-actions">
-      <a href="/create-listing.html" class="topbar-btn topbar-btn-primary nav-auth" style="display:none;">
+      <a href="create-listing.html" class="topbar-btn topbar-btn-primary nav-auth" style="display:none;">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         <span>أضف إعلان</span>
       </a>
       <div class="topbar-avatar nav-auth" style="display:none;" onclick="document.querySelector('.dropdown').classList.toggle('open')">
         <span class="nav-avatar">?</span>
         <div class="dropdown">
-          <a href="/dashboard.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
-          <a href="/profile.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>ملفي الشخصي</a>
+          <a href="dashboard.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>لوحة التحكم</a>
+          <a href="profile.html"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>ملفي الشخصي</a>
           <a href="#" class="danger" onclick="api.logout()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>تسجيل الخروج</a>
         </div>
       </div>
-      <a href="/signin.html" class="topbar-btn topbar-btn-outline nav-guest"><span>تسجيل الدخول</span></a>
-      <a href="/create-listing.html" class="topbar-btn topbar-btn-primary nav-guest">
+      <a href="#" onclick="openAuth('login');return false;" class="topbar-btn topbar-btn-outline nav-guest"><span>تسجيل الدخول</span></a>
+      <a href="create-listing.html" class="topbar-btn topbar-btn-primary nav-guest">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         <span>أضف إعلان</span>
       </a>
@@ -235,7 +235,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
       <div class="slide-text">
         <h2>اشترِ وبِع أي شيء بكل سهولة</h2>
         <p>من الإلكترونيات والأثاث إلى السيارات والعقارات — كل شيء في مكان واحد.</p>
-        <a href="/create-listing.html" class="slide-cta">
+        <a href="create-listing.html" class="slide-cta">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           ابدأ البيع مجاناً
         </a>
@@ -245,14 +245,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
       <div class="slide-text">
         <h2>شارك مهاراتك واعرض خدماتك</h2>
         <p>مصمم؟ مبرمج؟ مدرّس؟ اعرض مهاراتك على آلاف الأشخاص الباحثين عن خبراء مثلك.</p>
-        <a href="/create-listing.html" class="slide-cta">اعرض مهاراتك الآن</a>
+        <a href="create-listing.html" class="slide-cta">اعرض مهاراتك الآن</a>
       </div>
     </div>
     <div class="slide slide-3">
       <div class="slide-text">
         <h2>أطلق مشروعك وابحث عن شركاء</h2>
         <p>عندك فكرة مشروع؟ شاركها مع مجتمعنا وابحث عن شركاء ومستثمرين ومواهب.</p>
-        <a href="/create-listing.html" class="slide-cta">انشر مشروعك</a>
+        <a href="create-listing.html" class="slide-cta">انشر مشروعك</a>
       </div>
     </div>
   </div>
@@ -263,37 +263,37 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 <section class="section">
   <div class="section-head"><h2>اكتشف حسب اهتمامك</h2></div>
   <div class="collections">
-    <a href="/?category=product" class="collection">
+    <a href="index.html?category=product" class="collection">
       <div class="coll-icon" style="background:var(--primary-l);color:var(--primary);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
       </div>
       <div class="coll-text"><h4>إلكترونيات وأجهزة</h4><p>هواتف، لابتوبات، أجهزة منزلية</p></div>
     </a>
-    <a href="/?category=skill" class="collection">
+    <a href="index.html?category=skill" class="collection">
       <div class="coll-icon" style="background:var(--purple-l);color:var(--purple);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg>
       </div>
       <div class="coll-text"><h4>دروس خصوصية ومهارات</h4><p>تعلّم أو علّم — لغات، برمجة، تصميم</p></div>
     </a>
-    <a href="/?category=service" class="collection">
+    <a href="index.html?category=service" class="collection">
       <div class="coll-icon" style="background:var(--accent-l);color:var(--accent);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9c.26.604.852.997 1.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
       </div>
       <div class="coll-text"><h4>خدمات منزلية ومهنية</h4><p>صيانة، تنظيف، نقل أثاث، تصوير</p></div>
     </a>
-    <a href="/?category=housing" class="collection">
+    <a href="index.html?category=housing" class="collection">
       <div class="coll-icon" style="background:var(--blue-l);color:var(--blue);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       </div>
       <div class="coll-text"><h4>شقق وعقارات</h4><p>للبيع أو الإيجار — شقق، فلل، أراضي</p></div>
     </a>
-    <a href="/?category=vehicle" class="collection">
+    <a href="index.html?category=vehicle" class="collection">
       <div class="coll-icon" style="background:var(--rose-l);color:var(--rose);">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13" rx="2"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
       </div>
       <div class="coll-text"><h4>سيارات ومركبات</h4><p>سيارات، دراجات، قطع غيار</p></div>
     </a>
-    <a href="/?category=project" class="collection">
+    <a href="index.html?category=project" class="collection">
       <div class="coll-icon" style="background:#FEF3C7;color:#D97706;">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
       </div>
@@ -306,22 +306,22 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
 <section class="section" style="padding-top:8px;">
   <div class="section-head"><h2>ليس مجرد سوق — بل مجتمع</h2></div>
   <div class="spotlight-grid">
-    <a href="/?category=skill" class="spotlight sp-skills">
+    <a href="index.html?category=skill" class="spotlight sp-skills">
       <h3>اعرض مهاراتك على العالم</h3>
       <p>مصمم جرافيك؟ مبرمج؟ مدرّس لغات؟ معلّم قرآن؟ آلاف الأشخاص يبحثون عن خبراء مثلك.</p>
       <span class="spotlight-link">تصفح المهارات <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
     </a>
-    <a href="/?category=project" class="spotlight sp-projects">
+    <a href="index.html?category=project" class="spotlight sp-projects">
       <h3>أطلق مشروعك من هنا</h3>
       <p>شارك فكرة مشروعك، ابحث عن مستثمرين أو شركاء تقنيين، أو انضم لمشروع قائم.</p>
       <span class="spotlight-link">تصفح المشاريع <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
     </a>
-    <a href="/?category=other" class="spotlight sp-crafts">
+    <a href="index.html?category=other" class="spotlight sp-crafts">
       <h3>حِرف يدوية وإبداعات</h3>
       <p>صناعات يدوية، فنون، حلويات منزلية، ملابس مصممة — اعرض إبداعك وبِع مباشرة.</p>
       <span class="spotlight-link">تصفح الحِرف <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
     </a>
-    <a href="/?category=housing" class="spotlight sp-housing">
+    <a href="index.html?category=housing" class="spotlight sp-housing">
       <h3>ابحث عن سكنك القادم</h3>
       <p>شقق مفروشة، غرف مشتركة، فلل للإيجار — تصفح العقارات المتاحة في مدينتك.</p>
       <span class="spotlight-link">تصفح العقارات <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="12 5 19 12 12 19"/></svg></span>
@@ -375,7 +375,7 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
       <h3>عندك شيء تعرضه؟</h3>
       <p>سواء كان منتج، مهارة، مشروع، حِرفة، أو خدمة — انشر إعلانك الآن مجاناً وابدأ بالوصول لآلاف الأشخاص.</p>
     </div>
-    <a href="/create-listing.html" class="cta-btn">أضف إعلانك مجاناً</a>
+    <a href="create-listing.html" class="cta-btn">أضف إعلانك مجاناً</a>
   </div>
 </section>
 
@@ -390,23 +390,23 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
     </div>
     <div class="footer-col">
       <h4>استكشف</h4>
-      <a href="/">الرئيسية</a>
-      <a href="/dashboard.html">لوحة التحكم</a>
-      <a href="/create-listing.html">أضف إعلان</a>
-      <a href="/contact.html">تواصل معنا</a>
+      <a href="index.html">الرئيسية</a>
+      <a href="dashboard.html">لوحة التحكم</a>
+      <a href="create-listing.html">أضف إعلان</a>
+      <a href="contact.html">تواصل معنا</a>
     </div>
     <div class="footer-col">
       <h4>الفئات</h4>
-      <a href="/?category=product">منتجات</a>
-      <a href="/?category=skill">مهارات</a>
-      <a href="/?category=housing">عقارات</a>
-      <a href="/?category=service">خدمات</a>
-      <a href="/?category=project">مشاريع</a>
-      <a href="/?category=vehicle">مركبات</a>
+      <a href="index.html?category=product">منتجات</a>
+      <a href="index.html?category=skill">مهارات</a>
+      <a href="index.html?category=housing">عقارات</a>
+      <a href="index.html?category=service">خدمات</a>
+      <a href="index.html?category=project">مشاريع</a>
+      <a href="index.html?category=vehicle">مركبات</a>
     </div>
     <div class="footer-col">
       <h4>الدعم</h4>
-      <a href="/contact.html">مركز المساعدة</a>
+      <a href="contact.html">مركز المساعدة</a>
       <a href="#">الشروط والأحكام</a>
       <a href="#">سياسة الخصوصية</a>
       <a href="#">كيف يعمل ماركت هب</a>
@@ -415,14 +415,14 @@ footer{background:var(--surface);border-top:1px solid var(--border);margin-top:4
   <div class="footer-bottom">&copy; 2026 ماركت هب. جميع الحقوق محفوظة.</div>
 </footer>
 
-<script src="/public/js/api.js"></script>
-<script src="/public/js/app.js"></script>
+<script src="public/js/api.js"></script>
+<script src="public/js/app.js"></script>
 <script>
 // Category bar
 const catbar = document.getElementById('catbar');
 const curCat = new URLSearchParams(location.search).get('category') || '';
 [{id:'', label:'الكل'}, ...CATEGORIES].forEach(c => {
-  catbar.innerHTML += `<a href="/${c.id ? '?category='+c.id : ''}" class="catbar-item${curCat === c.id ? ' active' : ''}">${c.label}</a>`;
+  catbar.innerHTML += `<a href="index.html${c.id ? '?category='+c.id : ''}" class="catbar-item${curCat === c.id ? ' active' : ''}">${c.label}</a>`;
 });
 
 // Tab bar (pill filters)
@@ -454,7 +454,7 @@ function renderCard(l) {
   const img = l.images && l.images.length ? l.images[0] : '';
   const priceText = l.priceType === 'free' ? 'مجاني' : `${l.price?.toLocaleString() || 0} د.إ`;
   return `
-    <a href="/listing.html?id=${l._id}" class="card">
+    <a href="listing.html?id=${l._id}" class="card">
       <div class="card-img">
         ${img ? `<img src="${img}" alt="${l.title}" loading="lazy"/>` : getCategoryIcon(l.category)}
         <span class="card-badge">${getCategoryLabel(l.category)}</span>
@@ -506,7 +506,7 @@ function doSearch() {
   const search = document.getElementById('search-input').value;
   const q = new URLSearchParams();
   if (search) q.set('search', search);
-  window.location.href = '/?' + q.toString();
+  window.location.href = 'index.html?' + q.toString();
 }
 
 loadListings();

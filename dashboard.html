@@ -108,12 +108,12 @@ tr:last-child td{border-bottom:none;}
 </head>
 <body>
 <nav>
-  <a href="/" class="nav-logo">
+  <a href="index.html" class="nav-logo">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6"/></svg>
     ماركت هب
   </a>
   <div class="nav-right">
-    <a href="/create-listing.html" class="btn btn-primary">
+    <a href="create-listing.html" class="btn btn-primary">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
       إعلان جديد
     </a>
@@ -169,7 +169,7 @@ tr:last-child td{border-bottom:none;}
       <h1 class="page-title">إعلاناتي</h1>
       <p class="page-sub">إدارة إعلاناتك النشطة والمسودات.</p>
       <div class="table-card">
-        <div class="table-header"><h3>جميع الإعلانات</h3><a href="/create-listing.html" class="btn btn-primary" style="padding:8px 16px;font-size:12px;">+ جديد</a></div>
+        <div class="table-header"><h3>جميع الإعلانات</h3><a href="create-listing.html" class="btn btn-primary" style="padding:8px 16px;font-size:12px;">+ جديد</a></div>
         <div id="my-listings"><div class="empty"><div class="spinner"></div></div></div>
       </div>
     </div>
@@ -219,10 +219,10 @@ tr:last-child td{border-bottom:none;}
     </div>
   </main>
 </div>
-<script src="/public/js/api.js"></script>
-<script src="/public/js/app.js"></script>
+<script src="public/js/api.js"></script>
+<script src="public/js/app.js"></script>
 <script>
-if (!api.isLoggedIn()) window.location.href = '/signin.html';
+if (!api.isLoggedIn()) window.location.href = 'signin.html';
 const user = api.getUser();
 if (user) {
   document.getElementById('greeting').textContent = `مرحباً، ${user.name}`;
@@ -257,13 +257,13 @@ async function loadDashboard() {
     document.getElementById('s-views').textContent = totalViews;
     const statusMap = { active: 'نشط', draft: 'مسودة', sold: 'مُباع' };
     const listingsHTML = (items) => {
-      if (!items.length) return '<div class="empty">لا توجد إعلانات بعد. <a href="/create-listing.html">أنشئ واحداً</a></div>';
+      if (!items.length) return '<div class="empty">لا توجد إعلانات بعد. <a href="create-listing.html">أنشئ واحداً</a></div>';
       return `<table><thead><tr><th>الإعلان</th><th>السعر</th><th>الحالة</th><th>المشاهدات</th><th></th></tr></thead><tbody>
         ${items.map(l => `<tr><td><div class="td-title">${l.images?.[0] ? `<img src="${l.images[0]}" class="td-img"/>` : ''}<div><div class="td-name">${l.title}</div><div class="td-cat">${getCategoryLabel(l.category)}</div></div></div></td>
         <td>${l.priceType === 'free' ? 'مجاني' : (l.price || 0) + ' د.إ'}</td>
         <td><span class="status status-${l.status}">${statusMap[l.status] || l.status}</span></td>
         <td>${l.views || 0}</td>
-        <td><a href="/listing.html?id=${l._id}" style="color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;">عرض</a></td></tr>`).join('')}</tbody></table>`;
+        <td><a href="listing.html?id=${l._id}" style="color:var(--primary);font-size:13px;font-weight:600;text-decoration:none;">عرض</a></td></tr>`).join('')}</tbody></table>`;
     };
     document.getElementById('recent-listings').innerHTML = listingsHTML(myListings.slice(0, 5));
     document.getElementById('my-listings').innerHTML = listingsHTML(myListings);

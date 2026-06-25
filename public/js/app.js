@@ -85,4 +85,140 @@ function timeAgo(date) {
   return new Date(date).toLocaleDateString('ar');
 }
 
-document.addEventListener('DOMContentLoaded', initNavbar);
+/* ─── Sign In Modal ─── */
+function initAuthModal() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .auth-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:9000;display:none;align-items:center;justify-content:center;padding:16px;}
+    .auth-overlay.open{display:flex;}
+    .auth-modal{background:#fff;border-radius:16px;width:100%;max-width:400px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.2);position:relative;animation:authIn .25s ease;}
+    @keyframes authIn{from{opacity:0;transform:translateY(16px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+    .auth-close{position:absolute;top:12px;left:12px;width:32px;height:32px;border-radius:50%;border:none;background:#F3F4F6;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.15s;color:#607D8B;}
+    .auth-close:hover{background:#E8ECED;}
+    .auth-tabs{display:flex;border-bottom:1px solid #E8ECED;margin-bottom:24px;}
+    .auth-tab{flex:1;text-align:center;padding:10px;font-size:14px;font-weight:600;color:#B0BEC5;cursor:pointer;border-bottom:2px solid transparent;transition:.15s;font-family:'Noto Kufi Arabic',sans-serif;background:none;border-top:none;border-right:none;border-left:none;}
+    .auth-tab.active{color:#13C1AC;border-bottom-color:#13C1AC;}
+    .auth-title{font-size:20px;font-weight:800;color:#263238;margin-bottom:4px;}
+    .auth-sub{font-size:13px;color:#78909C;margin-bottom:20px;}
+    .auth-field{margin-bottom:14px;}
+    .auth-field label{display:block;font-size:12px;font-weight:600;color:#607D8B;margin-bottom:5px;}
+    .auth-field input{width:100%;padding:10px 14px;border:1.5px solid #E8ECED;border-radius:10px;font-size:14px;font-family:'Noto Kufi Arabic','Inter',sans-serif;color:#263238;outline:none;transition:.15s;background:#FAFAFA;}
+    .auth-field input:focus{border-color:#13C1AC;box-shadow:0 0 0 3px #E6FAF7;background:#fff;}
+    .auth-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+    .auth-btn{width:100%;padding:12px;border:none;border-radius:10px;background:#13C1AC;color:#fff;font-size:14px;font-weight:700;font-family:'Noto Kufi Arabic',sans-serif;cursor:pointer;transition:.15s;margin-top:6px;}
+    .auth-btn:hover{background:#0EA899;}
+    .auth-btn:disabled{opacity:.6;cursor:not-allowed;}
+    .auth-error{color:#E53935;font-size:12px;margin-top:6px;display:none;}
+    .auth-footer{text-align:center;font-size:12px;color:#B0BEC5;margin-top:16px;}
+    .auth-footer a{color:#13C1AC;font-weight:600;cursor:pointer;}
+    @media(max-width:480px){.auth-modal{padding:24px 20px;}}
+  `;
+  document.head.appendChild(style);
+
+  const overlay = document.createElement('div');
+  overlay.className = 'auth-overlay';
+  overlay.id = 'auth-modal';
+  overlay.innerHTML = `
+    <div class="auth-modal">
+      <button class="auth-close" onclick="closeAuth()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" data-t="login" onclick="switchAuthTab('login')">تسجيل الدخول</button>
+        <button class="auth-tab" data-t="register" onclick="switchAuthTab('register')">حساب جديد</button>
+      </div>
+      <div id="auth-login">
+        <div class="auth-title">أهلاً بعودتك</div>
+        <div class="auth-sub">سجّل الدخول إلى حسابك</div>
+        <form onsubmit="handleAuthLogin(event)">
+          <div class="auth-field">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="al-email" placeholder="example@email.com" required/>
+          </div>
+          <div class="auth-field">
+            <label>كلمة المرور</label>
+            <input type="password" id="al-pass" placeholder="كلمة المرور" required minlength="6"/>
+          </div>
+          <div class="auth-error" id="al-err"></div>
+          <button type="submit" class="auth-btn" id="al-btn">تسجيل الدخول</button>
+        </form>
+        <div class="auth-footer">ليس لديك حساب؟ <a onclick="switchAuthTab('register')">أنشئ واحداً</a></div>
+      </div>
+      <div id="auth-register" style="display:none;">
+        <div class="auth-title">أنشئ حسابك</div>
+        <div class="auth-sub">انضم إلى ماركت هب مجاناً</div>
+        <form onsubmit="handleAuthRegister(event)">
+          <div class="auth-field">
+            <label>الاسم الكامل</label>
+            <input type="text" id="ar-name" placeholder="اسمك" required/>
+          </div>
+          <div class="auth-field">
+            <label>البريد الإلكتروني</label>
+            <input type="email" id="ar-email" placeholder="example@email.com" required/>
+          </div>
+          <div class="auth-row">
+            <div class="auth-field">
+              <label>كلمة المرور</label>
+              <input type="password" id="ar-pass" placeholder="٦ أحرف +" required minlength="6"/>
+            </div>
+            <div class="auth-field">
+              <label>الموقع</label>
+              <input type="text" id="ar-loc" placeholder="المدينة"/>
+            </div>
+          </div>
+          <div class="auth-error" id="ar-err"></div>
+          <button type="submit" class="auth-btn" id="ar-btn">إنشاء الحساب</button>
+        </form>
+        <div class="auth-footer">لديك حساب؟ <a onclick="switchAuthTab('login')">سجّل الدخول</a></div>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  overlay.addEventListener('click', e => { if (e.target === overlay) closeAuth(); });
+}
+
+function openAuth(tab) {
+  const m = document.getElementById('auth-modal');
+  m.classList.add('open');
+  if (tab) switchAuthTab(tab);
+}
+function closeAuth() { document.getElementById('auth-modal').classList.remove('open'); }
+function switchAuthTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.t === tab));
+  document.getElementById('auth-login').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('auth-register').style.display = tab === 'register' ? '' : 'none';
+}
+
+async function handleAuthLogin(e) {
+  e.preventDefault();
+  const btn = document.getElementById('al-btn');
+  const err = document.getElementById('al-err');
+  btn.disabled = true; btn.textContent = 'جاري الدخول...'; err.style.display = 'none';
+  try {
+    const data = await api.login({ email: document.getElementById('al-email').value, password: document.getElementById('al-pass').value });
+    api.setToken(data.token); api.setUser(data.user);
+    closeAuth(); showToast('أهلاً بعودتك، ' + data.user.name + '!');
+    setTimeout(() => location.reload(), 400);
+  } catch (error) {
+    err.textContent = error.error || 'فشل تسجيل الدخول'; err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'تسجيل الدخول';
+  }
+}
+
+async function handleAuthRegister(e) {
+  e.preventDefault();
+  const btn = document.getElementById('ar-btn');
+  const err = document.getElementById('ar-err');
+  btn.disabled = true; btn.textContent = 'جاري الإنشاء...'; err.style.display = 'none';
+  try {
+    const data = await api.register({ name: document.getElementById('ar-name').value, email: document.getElementById('ar-email').value, password: document.getElementById('ar-pass').value, location: document.getElementById('ar-loc').value });
+    api.setToken(data.token); api.setUser(data.user);
+    closeAuth(); showToast('مرحباً بك في ماركت هب!');
+    setTimeout(() => location.reload(), 400);
+  } catch (error) {
+    err.textContent = error.error || error.errors?.[0]?.msg || 'فشل إنشاء الحساب'; err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'إنشاء الحساب';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => { initNavbar(); initAuthModal(); });
