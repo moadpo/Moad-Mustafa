@@ -38,23 +38,123 @@ function showToast(message, type = 'success') {
   setTimeout(() => { toast.style.opacity = '0'; toast.style.transition = 'opacity .3s'; setTimeout(() => toast.remove(), 300); }, 3500);
 }
 
+/* Profile dropdown */
+function initProfileDropdown() {
+  const style = document.createElement('style');
+  style.textContent = `
+    .profile-trigger{display:flex;align-items:center;gap:8px;cursor:pointer;padding:4px;border-radius:24px;transition:.15s;position:relative;}
+    .profile-trigger:hover{background:#f0f0f0;}
+    .profile-avatar{width:36px;height:36px;border-radius:50%;background:#13C1AC;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .profile-name{font-size:13px;font-weight:600;color:#263238;max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .profile-chevron{width:16px;height:16px;color:#78909C;transition:.2s;}
+    .profile-trigger.open .profile-chevron{transform:rotate(180deg);}
+    .profile-menu{position:absolute;top:50px;left:0;background:#fff;border:1px solid #E8ECED;border-radius:12px;box-shadow:0 8px 30px rgba(0,0,0,.12);min-width:240px;display:none;overflow:hidden;z-index:999;}
+    .profile-trigger.open .profile-menu{display:block;}
+    .pm-header{padding:16px;border-bottom:1px solid #E8ECED;display:flex;align-items:center;gap:12px;}
+    .pm-avatar{width:44px;height:44px;border-radius:50%;background:#13C1AC;color:#fff;font-size:18px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+    .pm-info{min-width:0;}
+    .pm-name{font-size:14px;font-weight:700;color:#263238;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .pm-email{font-size:11px;color:#78909C;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+    .pm-section{padding:6px 0;}
+    .pm-section+.pm-section{border-top:1px solid #E8ECED;}
+    .pm-item{display:flex;align-items:center;gap:10px;padding:10px 16px;font-size:13px;font-weight:500;color:#607D8B;cursor:pointer;transition:.1s;text-decoration:none;}
+    .pm-item:hover{background:#F5F5F5;color:#263238;}
+    .pm-item svg{width:18px;height:18px;flex-shrink:0;}
+    .pm-item.danger{color:#E53935;}
+    .pm-item.danger:hover{background:#FFF5F5;}
+  `;
+  document.head.appendChild(style);
+}
+
 /* Navbar auth state */
 function initNavbar() {
   const user = api.getUser();
   const guestEls = document.querySelectorAll('.nav-guest');
   const authEls = document.querySelectorAll('.nav-auth');
-  const avatarEl = document.querySelector('.nav-avatar');
-  const nameEl = document.querySelector('.nav-username');
 
   if (user && api.isLoggedIn()) {
     guestEls.forEach(el => el.style.display = 'none');
     authEls.forEach(el => el.style.display = '');
-    if (avatarEl) avatarEl.textContent = user.name ? user.name.charAt(0).toUpperCase() : '?';
-    if (nameEl) nameEl.textContent = user.name || '';
+
+    // Remove old avatar/dropdown if exists
+    document.querySelectorAll('.topbar-avatar,.profile-trigger').forEach(el => {
+      if (!el.classList.contains('profile-trigger')) el.style.display = 'none';
+    });
+
+    // Inject profile dropdown into topbar-actions or nav-right
+    const container = document.querySelector('.topbar-actions') || document.querySelector('.nav-right');
+    if (container && !container.querySelector('.profile-trigger')) {
+      const trigger = document.createElement('div');
+      trigger.className = 'profile-trigger';
+      trigger.innerHTML = `
+        <div class="profile-avatar">${user.name ? user.name.charAt(0).toUpperCase() : '?'}</div>
+        <span class="profile-name">${user.name || ''}</span>
+        <svg class="profile-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="profile-menu">
+          <div class="pm-header">
+            <div class="pm-avatar">${user.name ? user.name.charAt(0).toUpperCase() : '?'}</div>
+            <div class="pm-info">
+              <div class="pm-name">${user.name || 'مستخدم'}</div>
+              <div class="pm-email">${user.email || ''}</div>
+            </div>
+          </div>
+          <div class="pm-section">
+            <a href="profile.html" class="pm-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              الملف الشخصي
+            </a>
+            <a href="dashboard.html" class="pm-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              لوحة التحكم
+            </a>
+          </div>
+          <div class="pm-section">
+            <a href="create-listing.html" class="pm-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              أضف إعلان جديد
+            </a>
+            <a href="dashboard.html" class="pm-item" onclick="setTimeout(()=>document.querySelector('[onclick*=listings]')?.click(),500)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 002 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+              إعلاناتي
+            </a>
+            <a href="dashboard.html" class="pm-item" onclick="setTimeout(()=>document.querySelector('[onclick*=saved]')?.click(),500)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>
+              المحفوظات
+            </a>
+            <a href="dashboard.html" class="pm-item" onclick="setTimeout(()=>document.querySelector('[onclick*=messages]')?.click(),500)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+              الرسائل
+            </a>
+          </div>
+          <div class="pm-section">
+            <a href="dashboard.html" class="pm-item" onclick="setTimeout(()=>document.querySelector('[onclick*=settings]')?.click(),500)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9c.18-.63-.005-1.317-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06c.503.325 1.19.51 1.82.33A1.65 1.65 0 0010 3.09V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51c.63.18 1.317.005 1.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06c-.325.503-.51 1.19-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+              الإعدادات
+            </a>
+            <a href="#" class="pm-item danger" onclick="api.logout();return false;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              تسجيل الخروج
+            </a>
+          </div>
+        </div>
+      `;
+      trigger.addEventListener('click', (e) => {
+        if (e.target.closest('.pm-item')) return;
+        trigger.classList.toggle('open');
+      });
+      container.appendChild(trigger);
+    }
   } else {
     guestEls.forEach(el => el.style.display = '');
     authEls.forEach(el => el.style.display = 'none');
   }
+
+  // Close on outside click
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.profile-trigger')) {
+      document.querySelectorAll('.profile-trigger').forEach(t => t.classList.remove('open'));
+    }
+  });
 }
 
 /* Listing card HTML */
@@ -221,4 +321,4 @@ async function handleAuthRegister(e) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => { initNavbar(); initAuthModal(); });
+document.addEventListener('DOMContentLoaded', () => { initProfileDropdown(); initNavbar(); initAuthModal(); });
